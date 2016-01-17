@@ -7,5 +7,10 @@
             "email": "joe@joe.codes"
         }
     ],
-    "require": {}
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Alfred\\Workflows\\": "src/"
+        }
+    },
 }
