@@ -1,0 +1,11 @@
+{
+    "name": "joetannenbaum/alfred-workflow",
+    "description": "PHP helper for creating Alfred Workflows",
+    "authors": [
+        {
+            "name": "Joe Tannenbaum",
+            "email": "joe@joe.codes"
+        }
+    ],
+    "require": {}
+}
