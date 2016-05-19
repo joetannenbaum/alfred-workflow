@@ -5,7 +5,7 @@
 [![Build Status](https://travis-ci.org/joetannenbaum/alfred-workflow.svg?branch=master)](https://travis-ci.org/joetannenbaum/alfred-workflow)
 [![Total Downloads](https://img.shields.io/packagist/dt/joetannenbaum/alfred-workflow.svg?style=flat)](https://packagist.org/packages/league/climate)
 
-This package simplifies workflow development for Alfred 3 when working with PHP.
+This package simplifies PHP development for **Alfred 3** workflows.
 
 ## Installation
 
