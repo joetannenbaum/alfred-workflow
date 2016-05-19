@@ -15,7 +15,7 @@ composer require joetannenbaum/alfred-workflow
 
 ## Usage
 
-To understand the following properties, please reference the (official Alfred 3 documentation)[https://www.alfredapp.com/help/workflows/inputs/script-filter/json/].
+To understand the following properties, please reference the [official Alfred 3 documentation](https://www.alfredapp.com/help/workflows/inputs/script-filter/json/).
 
 The library is not doing any validation for required properties, so all of the following are optional. Please refer to the documentation above for required properties. All of the properties will default to the official defaults if excluded.
 
