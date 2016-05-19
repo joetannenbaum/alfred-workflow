@@ -96,7 +96,7 @@ class Result
         }
 
         foreach ($this->subtitles as $mod => $subtitle) {
-            $result[$mod] = [
+            $result['mods'][$mod] = [
                 'valid'    => true,
                 'subtitle' => $subtitle,
             ];
