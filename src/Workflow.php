@@ -6,6 +6,11 @@ class Workflow
 {
     protected $results = [];
 
+    /**
+     * Add a result to the workflow
+     *
+     * @return \Alfred\Workflows\Result
+     */
     public function result()
     {
         $result = new Result;
@@ -15,6 +20,14 @@ class Workflow
         return $result;
     }
 
+    /**
+     * Sort the current results
+     *
+     * @param string $direction
+     * @param string $property
+     *
+     * @return \Alfred\Workflows\Workflow
+     */
     public function sortResults($direction = 'asc', $property = 'title')
     {
         usort($this->results, function ($a, $b) use ($direction, $property) {
@@ -28,6 +41,14 @@ class Workflow
         return $this;
     }
 
+    /**
+     * Filter current results (destructive)
+     *
+     * @param string $query
+     * @param string $property
+     *
+     * @return \Alfred\Workflows\Workflow
+     */
     public function filterResults($query, $property = 'title')
     {
         if ($query === null || trim($query) === '') {
@@ -43,6 +64,11 @@ class Workflow
         return $this;
     }
 
+    /**
+     * Output the results as JSON
+     *
+     * @return string
+     */
     public function output()
     {
         $output = [
