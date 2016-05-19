@@ -85,18 +85,25 @@ class Result
         return $this;
     }
 
-    protected function setCopy($copy)
+    protected function setText($type, $text)
     {
-        $this->text['copy'] = $copy;
+        if (!in_array($type, ['copy', 'largetype'])) {
+            return $this;
+        }
+
+        $this->text[$type] = $text;
 
         return $this;
     }
 
+    protected function setCopy($copy)
+    {
+        return $this->setText('copy', $copy);
+    }
+
     protected function setLargetype($largetype)
     {
-        $this->text['largetype'] = $largetype;
-
-        return $this;
+        return $this->setText('largetype', $largetype);
     }
 
     protected function setMod($mod, $subtitle, $arg, $valid = true)
@@ -118,6 +125,21 @@ class Result
     protected function setShift($subtitle, $arg, $valid = true)
     {
         return $this->setMod('shift', $subtitle, $arg, $valid);
+    }
+
+    protected function setFn($subtitle, $arg, $valid = true)
+    {
+        return $this->setMod('fn', $subtitle, $arg, $valid);
+    }
+
+    protected function setCtrl($subtitle, $arg, $valid = true)
+    {
+        return $this->setMod('ctrl', $subtitle, $arg, $valid);
+    }
+
+    protected function setAlt($subtitle, $arg, $valid = true)
+    {
+        return $this->setMod('alt', $subtitle, $arg, $valid);
     }
 
     public function toArray()
