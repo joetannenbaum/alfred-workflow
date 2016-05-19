@@ -18,15 +18,15 @@ class Result
 
     protected $subtitle;
 
-    protected $subtitles = [];
-
     protected $icon;
 
-    protected $default = 'default';
+    protected $type;
 
-    protected $copy;
+    protected $text = [];
 
-    protected $largetype;
+    protected $quicklookurl;
+
+    protected $mods = [];
 
     public function generateUid($str)
     {
@@ -42,65 +42,116 @@ class Result
         return $this;
     }
 
-    protected function setDefault($default)
+    protected function setType($type, $verify_existence = true)
     {
-        if (in_array($default, ['default', 'file', 'file:skipcheck'])) {
-            $this->default = $default;
+        if (in_array($type, ['default', 'file', 'file:skipcheck'])) {
+            if ($type === 'file' && $verify_existence === false) {
+                $type = 'file:skipcheck';
+            }
+
+            $this->type = $type;
         }
 
         return $this;
     }
 
-    protected function setSubtitle($subtitle, $mod = null)
+    protected function setIcon($path, $type = null)
     {
-        if ($mod === null) {
-            $this->subtitle = $subtitle;
+        $this->icon = [
+            'path' => $path,
+        ];
 
-            return $this;
+        if (in_array($type, ['fileicon', 'filetype'])) {
+            $this->icon['type'] = $type;
         }
 
+        return $this;
+    }
+
+    protected function setFileiconIcon($path)
+    {
+        return $this->setIcon($path, 'fileicon');
+    }
+
+    protected function setFiletypeIcon($path)
+    {
+        return $this->setIcon($path, 'filetype');
+    }
+
+    protected function setSubtitle($subtitle)
+    {
+        $this->subtitle = $subtitle;
+
+        return $this;
+    }
+
+    protected function setCopy($copy)
+    {
+        $this->text['copy'] = $copy;
+
+        return $this;
+    }
+
+    protected function setLargetype($largetype)
+    {
+        $this->text['largetype'] = $largetype;
+
+        return $this;
+    }
+
+    protected function setMod($mod, $subtitle, $arg, $valid = true)
+    {
         if (!in_array($mod, ['shift', 'fn', 'ctrl', 'alt', 'cmd'])) {
             return $this;
         }
 
-        $this->subtitles[$mod] = $subtitle;
+        $this->mods[$mod] = compact('subtitle', 'arg', 'valid');
 
         return $this;
     }
 
+    protected function setCmd($subtitle, $arg, $valid = true)
+    {
+        return $this->setMod('cmd', $subtitle, $arg, $valid);
+    }
+
+    protected function setShift($subtitle, $arg, $valid = true)
+    {
+        return $this->setMod('shift', $subtitle, $arg, $valid);
+    }
+
     public function toArray()
     {
-        $attrs = ['uid', 'arg', 'autocomplete', 'default', 'title', 'subtitle'];
-
-        $result = [
-            'text' => [],
-            'mods' => [],
+        $attrs = [
+            'uid',
+            'arg',
+            'autocomplete',
+            'title',
+            'subtitle',
+            'type',
+            'valid',
+            'quicklookurl',
+            'icon',
+            'mods',
+            'text',
         ];
 
+        $result = [];
+
         foreach ($attrs as $attr) {
+            if (is_array($this->$attr)) {
+                if (count($this->$attr) > 0) {
+                    $result[$attr] = $this->$attr;
+                }
+                continue;
+            }
+
             if ($this->$attr !== null) {
                 $result[$attr] = $this->$attr;
             }
         }
 
-        if ($this->icon !== null) {
-            $result['icon'] = ['path' => $this->icon];
-        }
-
-        $text_attrs = ['copy', 'largetype'];
-
-        foreach ($text_attrs as $attr) {
-            if ($this->$attr !== null) {
-                $result['text'][$attr] = $this->$attr;
-            }
-        }
-
-        foreach ($this->subtitles as $mod => $subtitle) {
-            $result['mods'][$mod] = [
-                'valid'    => true,
-                'subtitle' => $subtitle,
-            ];
-        }
+        ksort($result);
 
         return $result;
     }

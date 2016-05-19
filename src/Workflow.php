@@ -34,6 +34,8 @@ class Workflow
             return $this;
         }
 
+        $query = (string) $query;
+
         $this->results = array_filter($this->results, function ($result) use ($query, $property) {
                 return strstr($result->$property, $query) !== false;
             });
