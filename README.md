@@ -76,8 +76,7 @@ Results in:
       "quicklookurl": "http://www.bobsburgers.com",
       "subtitle": "Head Burger Chef",
       "text": {
-        "copy": "Bob is the best!",
-        "largetype": "BOB IS THE BEST!"
+        "copy": "Bob is the best!"
       },
       "title": "Bob",
       "type": "default",
@@ -100,7 +99,6 @@ Results in:
       "quicklookurl": "http://www.bobsburgers.com",
       "subtitle": "Wife",
       "text": {
-        "copy": "Linda is the best!",
         "largetype": "LINDA IS THE BEST!"
       },
       "title": "Linda",
