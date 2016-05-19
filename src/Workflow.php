@@ -2,10 +2,6 @@
 
 namespace Alfred\Workflows;
 
-require 'Result.php';
-
-use SimpleXMLElement;
-
 class Workflow
 {
     protected $results = [];
@@ -45,14 +41,14 @@ class Workflow
         return $this;
     }
 
-    public function xml()
+    public function output()
     {
-        $items = new SimpleXMLElement('<items></items>');
+        $output = [
+            'items' => array_map(function ($result) {
+                            return $result->toArray();
+                        }, array_values($this->results)),
+        ];
 
-        foreach ($this->results as $result) {
-            $result->xml($items->addChild('item'));
-        }
-
-        return $items->asXML();
+        return json_encode($output);
     }
 }

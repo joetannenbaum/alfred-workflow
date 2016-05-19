@@ -10,7 +10,7 @@ class Result
 
     protected $arg;
 
-    protected $valid = 'yes';
+    protected $valid = true;
 
     protected $autocomplete;
 
@@ -35,53 +35,9 @@ class Result
         return $this;
     }
 
-    public function xml(SimpleXMLElement $item)
-    {
-        $this->addXmlAttr($item);
-        $this->addXmlChildren($item);
-
-        return $item;
-    }
-
-    protected function addXmlAttr(SimpleXMLElement $item)
-    {
-        $attrs = ['uid', 'arg', 'autocomplete', 'default'];
-
-        foreach ($attrs as $attr) {
-            if ($this->$attr !== null) {
-                $item->addAttribute($attr, $this->$attr);
-            }
-        }
-    }
-
-    protected function addXmlChildren(SimpleXMLElement $item)
-    {
-        $attrs = ['title', 'subtitle', 'icon'];
-
-        foreach ($attrs as $attr) {
-            if ($this->$attr !== null) {
-                $item->$attr = $this->$attr;
-            }
-        }
-
-        $text_attrs = ['copy', 'largetype'];
-
-        foreach ($text_attrs as $attr) {
-            if ($this->$attr !== null) {
-                $text = $item->addChild('text', $this->$attr);
-                $text->addAttribute('type', $attr);
-            }
-        }
-
-        foreach ($this->subtitles as $mod => $subtitle) {
-            $text = $item->addChild('subtitle', $subtitle);
-            $text->addAttribute('mod', $mod);
-        }
-    }
-
     protected function setValid($valid = true)
     {
-        $this->valid = (!!$valid === false) ? 'no' : 'yes';
+        $this->valid = !!$valid;
 
         return $this;
     }
@@ -110,6 +66,43 @@ class Result
         $this->subtitles[$mod] = $subtitle;
 
         return $this;
+    }
+
+    public function toArray()
+    {
+        $attrs = ['uid', 'arg', 'autocomplete', 'default', 'title', 'subtitle'];
+
+        $result = [
+            'text' => [],
+            'mods' => [],
+        ];
+
+        foreach ($attrs as $attr) {
+            if ($this->$attr !== null) {
+                $result[$attr] = $this->$attr;
+            }
+        }
+
+        if ($this->icon !== null) {
+            $result['icon'] = ['path' => $this->icon];
+        }
+
+        $text_attrs = ['copy', 'largetype'];
+
+        foreach ($text_attrs as $attr) {
+            if ($this->$attr !== null) {
+                $result['text'][$attr] = $this->$attr;
+            }
+        }
+
+        foreach ($this->subtitles as $mod => $subtitle) {
+            $result[$mod] = [
+                'valid'    => true,
+                'subtitle' => $subtitle,
+            ];
+        }
+
+        return $result;
     }
 
     public function __get($property)
