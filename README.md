@@ -26,6 +26,9 @@ require 'vendor/autoload.php';
 
 $workflow = new Workflow;
 
+// add variables
+$workflow->variable('fruit','apple');
+
 $workflow->result()
             ->uid('bob-belcher')
             ->title('Bob')
@@ -59,6 +62,9 @@ Results in:
 
 ```json
 {
+  "variables": {
+    "fruit": "apple"
+  },
   "items": [
     {
       "arg": "bob",
