@@ -88,11 +88,14 @@ class Workflow
     public function output()
     {
         $output = [
-            'variables' => $this->variables,
             'items' => array_map(function ($result) {
                             return $result->toArray();
                         }, array_values($this->results)),
         ];
+
+        if(!empty($this->variables)){
+            $output['variables'] = $this->variables;
+        };
 
         return json_encode($output);
     }
