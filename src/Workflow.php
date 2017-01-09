@@ -5,6 +5,7 @@ namespace Alfred\Workflows;
 class Workflow
 {
     protected $results = [];
+    protected $variables = [];
 
     /**
      * Add a result to the workflow
@@ -18,6 +19,21 @@ class Workflow
         $this->results[] = $result;
 
         return $result;
+    }
+
+    /**
+     * Add a variables to the workflow
+     *
+     * @param string $key
+     * @param string $value
+     *
+     * @return \Alfred\Workflows\Workflow
+     */
+    public function variable($key, $value)
+    {
+        $this->variables[$key] = $value;
+
+        return $this;
     }
 
     /**
@@ -76,6 +92,10 @@ class Workflow
                             return $result->toArray();
                         }, array_values($this->results)),
         ];
+
+        if(!empty($this->variables)){
+            $output['variables'] = $this->variables;
+        };
 
         return json_encode($output);
     }

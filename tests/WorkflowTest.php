@@ -418,4 +418,68 @@ class TestCase extends PHPUnit_Framework_TestCase
 
         $this->assertSame(json_encode($expected), $workflow->filterResults('ID 2', 'uid')->output());
     }
+
+    /** @test */
+    public function it_can_add_variables()
+    {
+        $workflow = new Workflow;
+
+        $workflow->variable('fruit','apple')
+                 ->variable('vegetables','carrots');
+
+        $workflow->result()
+                    ->uid('THE ID')
+                    ->title('Item Title')
+                    ->subtitle('Item Subtitle')
+                    ->quicklookurl('https://www.google.com')
+                    ->type('file')
+                    ->arg('ARGUMENT')
+                    ->valid(false)
+                    ->icon('icon.png')
+                    ->mod('cmd', 'Do Something Different', 'something-different')
+                    ->mod('shift', 'Another Different', 'another-different', false)
+                    ->copy('Please copy this')
+                    ->largetype('This will be huge')
+                    ->autocomplete('AutoComplete This');
+
+        $expected = [
+            'items' => [
+                [
+                    'arg'          => 'ARGUMENT',
+                    'autocomplete' => 'AutoComplete This',
+                    'icon'         => [
+                        'path' => 'icon.png',
+                    ],
+                    'mods' => [
+                        'cmd' => [
+                            'subtitle' => 'Do Something Different',
+                            'arg'      => 'something-different',
+                            'valid'    => true,
+                        ],
+                        'shift' => [
+                            'subtitle' => 'Another Different',
+                            'arg'      => 'another-different',
+                            'valid'    => false,
+                        ],
+                    ],
+                    'quicklookurl' => 'https://www.google.com',
+                    'subtitle'     => 'Item Subtitle',
+                    'text'         => [
+                        'copy'      => 'Please copy this',
+                        'largetype' => 'This will be huge',
+                    ],
+                    'title'        => 'Item Title',
+                    'type'         => 'file',
+                    'uid'          => 'THE ID',
+                    'valid'        => false,
+                ],
+            ],
+            'variables' => [
+                'fruit' => 'apple',
+                'vegetables' => 'carrots'
+            ]
+        ];
+
+        $this->assertSame(json_encode($expected), $workflow->output());
+    }
 }
