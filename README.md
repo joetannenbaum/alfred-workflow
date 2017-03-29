@@ -26,6 +26,10 @@ require 'vendor/autoload.php';
 
 $workflow = new Workflow;
 
+// add variables
+$workflow->variable('fruit','apple')
+         ->variable('vegetables','carrots');
+
 $workflow->result()
             ->uid('bob-belcher')
             ->title('Bob')
@@ -106,7 +110,11 @@ Results in:
       "uid": "linda-belcher",
       "valid": true
     }
-  ]
+  ],
+  "variables": {
+    "fruit": "apple",
+    "vegetables": "carrots"
+  }
 }
 ```
 
