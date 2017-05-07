@@ -74,7 +74,7 @@ class Workflow
         $query = (string) $query;
 
         $this->results = array_filter($this->results, function ($result) use ($query, $property) {
-                return strstr($result->$property, $query) !== false;
+                return stristr($result->$property, $query) !== false;
             });
 
         return $this;
