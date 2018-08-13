@@ -74,8 +74,8 @@ class Workflow
         $query = (string) $query;
 
         $this->results = array_filter($this->results, function ($result) use ($query, $property) {
-                return stristr($result->$property, $query) !== false;
-            });
+            return strcasecmp($result->$property, $query) !== false;
+        });
 
         return $this;
     }
@@ -89,11 +89,11 @@ class Workflow
     {
         $output = [
             'items' => array_map(function ($result) {
-                            return $result->toArray();
-                        }, array_values($this->results)),
+                return $result->toArray();
+            }, array_values($this->results)),
         ];
 
-        if(!empty($this->variables)){
+        if (!empty($this->variables)) {
             $output['variables'] = $this->variables;
         };
 
