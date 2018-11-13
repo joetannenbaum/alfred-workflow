@@ -152,16 +152,23 @@ class Result
      * @param string $subtitle
      * @param string $arg
      * @param bool $valid
+     * @param string $icon (path)
      *
      * @return \Alfred\Workflows\Result
      */
-    protected function setMod($mod, $subtitle, $arg, $valid = true)
+    protected function setMod($mod, $subtitle, $arg, $valid = true, $icon="")
     {
         if (!in_array($mod, ['shift', 'fn', 'ctrl', 'alt', 'cmd'])) {
             return $this;
         }
+        
+        if(!empty($icon)){
+            $icon = [
+                'path' => $icon,
+            ];
+        }
 
-        $this->mods[$mod] = compact('subtitle', 'arg', 'valid');
+        $this->mods[$mod] = compact('subtitle', 'arg', 'valid', 'icon');
 
         return $this;
     }
@@ -173,9 +180,9 @@ class Result
      *
      * @return \Alfred\Workflows\Result
      */
-    protected function setCmd($subtitle, $arg, $valid = true)
+    protected function setCmd($subtitle, $arg, $valid = true, $icon="")
     {
-        return $this->setMod('cmd', $subtitle, $arg, $valid);
+        return $this->setMod('cmd', $subtitle, $arg, $valid, $icon);
     }
 
     /**
@@ -185,9 +192,9 @@ class Result
      *
      * @return \Alfred\Workflows\Result
      */
-    protected function setShift($subtitle, $arg, $valid = true)
+    protected function setShift($subtitle, $arg, $valid = true, $icon="")
     {
-        return $this->setMod('shift', $subtitle, $arg, $valid);
+        return $this->setMod('shift', $subtitle, $arg, $valid, $icon);
     }
 
     /**
@@ -197,9 +204,9 @@ class Result
      *
      * @return \Alfred\Workflows\Result
      */
-    protected function setFn($subtitle, $arg, $valid = true)
+    protected function setFn($subtitle, $arg, $valid = true, $icon="")
     {
-        return $this->setMod('fn', $subtitle, $arg, $valid);
+        return $this->setMod('fn', $subtitle, $arg, $valid, $icon);
     }
 
     /**
@@ -209,9 +216,9 @@ class Result
      *
      * @return \Alfred\Workflows\Result
      */
-    protected function setCtrl($subtitle, $arg, $valid = true)
+    protected function setCtrl($subtitle, $arg, $valid = true, $icon="")
     {
-        return $this->setMod('ctrl', $subtitle, $arg, $valid);
+        return $this->setMod('ctrl', $subtitle, $arg, $valid, $icon);
     }
 
     /**
@@ -221,9 +228,9 @@ class Result
      *
      * @return \Alfred\Workflows\Result
      */
-    protected function setAlt($subtitle, $arg, $valid = true)
+    protected function setAlt($subtitle, $arg, $valid = true, $icon="")
     {
-        return $this->setMod('alt', $subtitle, $arg, $valid);
+        return $this->setMod('alt', $subtitle, $arg, $valid, $icon);
     }
 
     /**
