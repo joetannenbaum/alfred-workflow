@@ -1,8 +1,9 @@
 <?php
 
 use Alfred\Workflows\Workflow;
+use PHPUnit\Framework\TestCase as FrameworkTestCase;
 
-class TestCase extends PHPUnit_Framework_TestCase
+class TestCase extends FrameworkTestCase
 {
     /** @test */
     public function it_can_add_a_result()
@@ -10,19 +11,19 @@ class TestCase extends PHPUnit_Framework_TestCase
         $workflow = new Workflow;
 
         $workflow->result()
-                    ->uid('THE ID')
-                    ->title('Item Title')
-                    ->subtitle('Item Subtitle')
-                    ->quicklookurl('https://www.google.com')
-                    ->type('file')
-                    ->arg('ARGUMENT')
-                    ->valid(false)
-                    ->icon('icon.png')
-                    ->mod('cmd', 'Do Something Different', 'something-different')
-                    ->mod('shift', 'Another Different', 'another-different', false)
-                    ->copy('Please copy this')
-                    ->largetype('This will be huge')
-                    ->autocomplete('AutoComplete This');
+            ->uid('THE ID')
+            ->title('Item Title')
+            ->subtitle('Item Subtitle')
+            ->quicklookurl('https://www.google.com')
+            ->type('file')
+            ->arg('ARGUMENT')
+            ->valid(false)
+            ->icon('icon.png')
+            ->mod('cmd', 'Do Something Different', 'something-different')
+            ->mod('shift', 'Another Different', 'another-different', false)
+            ->copy('Please copy this')
+            ->largetype('This will be huge')
+            ->autocomplete('AutoComplete This');
 
         $expected = [
             'items' => [
@@ -67,34 +68,34 @@ class TestCase extends PHPUnit_Framework_TestCase
         $workflow = new Workflow;
 
         $workflow->result()
-                    ->uid('THE ID')
-                    ->title('Item Title')
-                    ->subtitle('Item Subtitle')
-                    ->quicklookurl('https://www.google.com')
-                    ->type('file')
-                    ->arg('ARGUMENT')
-                    ->valid(false)
-                    ->icon('icon.png')
-                    ->mod('cmd', 'Do Something Different', 'something-different')
-                    ->mod('shift', 'Another Different', 'another-different', false)
-                    ->copy('Please copy this')
-                    ->largetype('This will be huge')
-                    ->autocomplete('AutoComplete This');
+            ->uid('THE ID')
+            ->title('Item Title')
+            ->subtitle('Item Subtitle')
+            ->quicklookurl('https://www.google.com')
+            ->type('file')
+            ->arg('ARGUMENT')
+            ->valid(false)
+            ->icon('icon.png')
+            ->mod('cmd', 'Do Something Different', 'something-different')
+            ->mod('shift', 'Another Different', 'another-different', false)
+            ->copy('Please copy this')
+            ->largetype('This will be huge')
+            ->autocomplete('AutoComplete This');
 
         $workflow->result()
-                    ->uid('THE ID 2')
-                    ->title('Item Title 2')
-                    ->subtitle('Item Subtitle 2')
-                    ->quicklookurl('https://www.google.com/2')
-                    ->type('file')
-                    ->arg('ARGUMENT 2')
-                    ->valid(true)
-                    ->icon('icon2.png')
-                    ->mod('cmd', 'Do Something Different 2', 'something-different 2')
-                    ->mod('shift', 'Another Different 2', 'another-different 2', false)
-                    ->copy('Please copy this 2')
-                    ->largetype('This will be huge 2')
-                    ->autocomplete('AutoComplete This 2');
+            ->uid('THE ID 2')
+            ->title('Item Title 2')
+            ->subtitle('Item Subtitle 2')
+            ->quicklookurl('https://www.google.com/2')
+            ->type('file')
+            ->arg('ARGUMENT 2')
+            ->valid(true)
+            ->icon('icon2.png')
+            ->mod('cmd', 'Do Something Different 2', 'something-different 2')
+            ->mod('shift', 'Another Different 2', 'another-different 2', false)
+            ->copy('Please copy this 2')
+            ->largetype('This will be huge 2')
+            ->autocomplete('AutoComplete This 2');
 
         $expected = [
             'items' => [
@@ -187,7 +188,7 @@ class TestCase extends PHPUnit_Framework_TestCase
         $workflow = new Workflow;
 
         $workflow->result()->cmd('Hit Command', 'command-it', false)
-                            ->shift('Hit Shift', 'shift-it', true);
+            ->shift('Hit Shift', 'shift-it', true);
 
         $expected = [
             'items' => [
@@ -262,14 +263,14 @@ class TestCase extends PHPUnit_Framework_TestCase
         $workflow = new Workflow;
 
         $workflow->result()
-                    ->uid('THE ID')
-                    ->title('Item Title')
-                    ->subtitle('Item Subtitle');
+            ->uid('THE ID')
+            ->title('Item Title')
+            ->subtitle('Item Subtitle');
 
         $workflow->result()
-                    ->uid('THE ID 2')
-                    ->title('Item Title 2')
-                    ->subtitle('Item Subtitle 2');
+            ->uid('THE ID 2')
+            ->title('Item Title 2')
+            ->subtitle('Item Subtitle 2');
 
         $expected = [
             'items' => [
@@ -297,14 +298,14 @@ class TestCase extends PHPUnit_Framework_TestCase
         $workflow = new Workflow;
 
         $workflow->result()
-                    ->uid('THE ID')
-                    ->title('Item Title')
-                    ->subtitle('Item Subtitle');
+            ->uid('THE ID')
+            ->title('Item Title')
+            ->subtitle('Item Subtitle');
 
         $workflow->result()
-                    ->uid('THE ID 2')
-                    ->title('Item Title 2')
-                    ->subtitle('Item Subtitle 2');
+            ->uid('THE ID 2')
+            ->title('Item Title 2')
+            ->subtitle('Item Subtitle 2');
 
         $expected = [
             'items' => [
@@ -332,14 +333,14 @@ class TestCase extends PHPUnit_Framework_TestCase
         $workflow = new Workflow;
 
         $workflow->result()
-                    ->uid('456')
-                    ->title('Item Title')
-                    ->subtitle('Item Subtitle');
+            ->uid('456')
+            ->title('Item Title')
+            ->subtitle('Item Subtitle');
 
         $workflow->result()
-                    ->uid('123')
-                    ->title('Item Title 2')
-                    ->subtitle('Item Subtitle 2');
+            ->uid('123')
+            ->title('Item Title 2')
+            ->subtitle('Item Subtitle 2');
 
         $expected = [
             'items' => [
@@ -367,14 +368,14 @@ class TestCase extends PHPUnit_Framework_TestCase
         $workflow = new Workflow;
 
         $workflow->result()
-                    ->uid('THE ID')
-                    ->title('Item Title')
-                    ->subtitle('Item Subtitle');
+            ->uid('THE ID')
+            ->title('Item Title')
+            ->subtitle('Item Subtitle');
 
         $workflow->result()
-                    ->uid('THE ID 2')
-                    ->title('Item Title 2')
-                    ->subtitle('Item Subtitle 2');
+            ->uid('THE ID 2')
+            ->title('Item Title 2')
+            ->subtitle('Item Subtitle 2');
 
         $expected = [
             'items' => [
@@ -396,14 +397,14 @@ class TestCase extends PHPUnit_Framework_TestCase
         $workflow = new Workflow;
 
         $workflow->result()
-                    ->uid('THE ID')
-                    ->title('Item Title')
-                    ->subtitle('Item Subtitle');
+            ->uid('THE ID')
+            ->title('Item Title')
+            ->subtitle('Item Subtitle');
 
         $workflow->result()
-                    ->uid('THE ID 2')
-                    ->title('Item Title 2')
-                    ->subtitle('Item Subtitle 2');
+            ->uid('THE ID 2')
+            ->title('Item Title 2')
+            ->subtitle('Item Subtitle 2');
 
         $expected = [
             'items' => [
@@ -424,23 +425,23 @@ class TestCase extends PHPUnit_Framework_TestCase
     {
         $workflow = new Workflow;
 
-        $workflow->variable('fruit','apple')
-                 ->variable('vegetables','carrots');
+        $workflow->variable('fruit', 'apple')
+            ->variable('vegetables', 'carrots');
 
         $workflow->result()
-                    ->uid('THE ID')
-                    ->title('Item Title')
-                    ->subtitle('Item Subtitle')
-                    ->quicklookurl('https://www.google.com')
-                    ->type('file')
-                    ->arg('ARGUMENT')
-                    ->valid(false)
-                    ->icon('icon.png')
-                    ->mod('cmd', 'Do Something Different', 'something-different')
-                    ->mod('shift', 'Another Different', 'another-different', false)
-                    ->copy('Please copy this')
-                    ->largetype('This will be huge')
-                    ->autocomplete('AutoComplete This');
+            ->uid('THE ID')
+            ->title('Item Title')
+            ->subtitle('Item Subtitle')
+            ->quicklookurl('https://www.google.com')
+            ->type('file')
+            ->arg('ARGUMENT')
+            ->valid(false)
+            ->icon('icon.png')
+            ->mod('cmd', 'Do Something Different', 'something-different')
+            ->mod('shift', 'Another Different', 'another-different', false)
+            ->copy('Please copy this')
+            ->largetype('This will be huge')
+            ->autocomplete('AutoComplete This');
 
         $expected = [
             'items' => [
