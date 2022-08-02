@@ -1,11 +1,11 @@
-# Alfred 3 Workflows PHP Helper
+# Alfred Workflows PHP Helper
 
 [![Latest Version](https://img.shields.io/github/tag/joetannenbaum/alfred-workflow.svg?style=flat&label=release)](https://github.com/joetannenbaum/alfred-workflow/tags)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](LICENSE.md)
 [![Build Status](https://travis-ci.org/joetannenbaum/alfred-workflow.svg?branch=master)](https://travis-ci.org/joetannenbaum/alfred-workflow)
-[![Total Downloads](https://img.shields.io/packagist/dt/joetannenbaum/alfred-workflow.svg?style=flat)](https://packagist.org/packages/league/climate)
+[![Total Downloads](https://img.shields.io/packagist/dt/joetannenbaum/alfred-workflow.svg?style=flat)](https://packagist.org/packages/joetannenbaum/alfred-workflow)
 
-This package simplifies PHP development for **Alfred 3** workflows.
+This package simplifies PHP development for **Alfred** workflows.
 
 ## Installation
 
@@ -15,7 +15,7 @@ composer require joetannenbaum/alfred-workflow
 
 ## Usage
 
-To understand the following properties, please reference the [official Alfred 3 documentation](https://www.alfredapp.com/help/workflows/inputs/script-filter/json/).
+To understand the following properties, please reference the [official Alfred documentation](https://www.alfredapp.com/help/workflows/inputs/script-filter/json/).
 
 The library is not doing any validation for required properties, so all of the following are optional. Please refer to the documentation above for required properties. All of the properties will default to the official defaults if excluded.
 
