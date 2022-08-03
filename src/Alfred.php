@@ -81,6 +81,11 @@ class Alfred
         return $this->get('debug');
     }
 
+    public function debugging()
+    {
+        return !!$this->debug();
+    }
+
     public function all()
     {
         return array_filter($_SERVER, function ($value, $key) {
