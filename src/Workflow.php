@@ -8,6 +8,28 @@ class Workflow
     protected $variables = [];
 
     /**
+     * @var \Alfred\Workflows\Alfred
+     */
+    protected $alfred;
+
+    /**
+     * @var \Alfred\Workflows\Cache
+     */
+    protected $cache;
+
+    /**
+     * @var \Alfred\Workflows\Data
+     */
+    protected $data;
+
+    public function __construct()
+    {
+        $this->alfred = new Alfred();
+        $this->cache = new Cache();
+        $this->data = new Data();
+    }
+
+    /**
      * Add a result to the workflow
      *
      * @return \Alfred\Workflows\Result
@@ -102,6 +124,16 @@ class Workflow
 
     public function alfred()
     {
-        return new Alfred();
+        return $this->alfred;
+    }
+
+    public function cache()
+    {
+        return $this->cache;
+    }
+
+    public function data()
+    {
+        return $this->data;
     }
 }

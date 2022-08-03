@@ -8,90 +8,90 @@ class Alfred
 
     public function preferences()
     {
-        return $this->getEnv('preferences');
+        return $this->get('preferences');
     }
 
     public function preferencesLocalhash()
     {
-        return $this->getEnv('preferences_localhash');
+        return $this->get('preferences_localhash');
     }
 
     public function theme()
     {
-        return $this->getEnv('theme');
+        return $this->get('theme');
     }
 
     public function themeBackground()
     {
-        return $this->getEnv('theme_background');
+        return $this->get('theme_background');
     }
 
     public function themeSelectionBackground()
     {
-        return $this->getEnv('theme_selection_background');
+        return $this->get('theme_selection_background');
     }
 
     public function themeSubtext()
     {
-        return $this->getEnv('theme_subtext');
+        return $this->get('theme_subtext');
     }
 
     public function version()
     {
-        return $this->getEnv('version');
+        return $this->get('version');
     }
 
     public function versionBuild()
     {
-        return $this->getEnv('version_build');
+        return $this->get('version_build');
     }
 
     public function workflowBundleid()
     {
-        return $this->getEnv('workflow_bundleid');
+        return $this->get('workflow_bundleid');
     }
 
     public function workflowCache()
     {
-        return $this->getEnv('workflow_cache');
+        return $this->get('workflow_cache');
     }
 
     public function workflowData()
     {
-        return $this->getEnv('workflow_data');
+        return $this->get('workflow_data');
     }
 
     public function workflowName()
     {
-        return $this->getEnv('workflow_name');
+        return $this->get('workflow_name');
     }
 
     public function workflowUid()
     {
-        return $this->getEnv('workflow_uid');
+        return $this->get('workflow_uid');
     }
 
     public function workflowVersion()
     {
-        return $this->getEnv('workflow_version');
+        return $this->get('workflow_version');
     }
 
     public function debug()
     {
-        return $this->getEnv('debug');
+        return $this->get('debug');
     }
 
-    public function getAllEnv()
+    public function all()
     {
         return array_filter($_SERVER, function ($value, $key) {
             return strpos($key, $this->envPrefix, 0) === 0;
         }, ARRAY_FILTER_USE_BOTH);
     }
 
-    public function getEnv(string $name = null)
+    public function get(string $name = null)
     {
         if (!$name) {
-            return $this->getAllEnv();
+            return $this->all();
         }
 
         // Replace the prefix and add it back on in case they are passing it in
