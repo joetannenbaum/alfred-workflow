@@ -22,11 +22,17 @@ class Workflow
      */
     protected $data;
 
+    /**
+     * @var \Alfred\Workflows\Logger
+     */
+    protected $logger;
+
     public function __construct()
     {
         $this->alfred = new Alfred();
         $this->cache = new Cache();
         $this->data = new Data();
+        $this->logger = new Logger();
     }
 
     /**
@@ -135,5 +141,10 @@ class Workflow
     public function data()
     {
         return $this->data;
+    }
+
+    public function logger()
+    {
+        return $this->logger;
     }
 }
