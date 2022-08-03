@@ -99,4 +99,9 @@ class Workflow
 
         return json_encode($output);
     }
+
+    public function alfred()
+    {
+        return new Alfred();
+    }
 }
