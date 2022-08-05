@@ -6,7 +6,17 @@ use PHPUnit\Framework\TestCase as FrameworkTestCase;
 class TestCase extends FrameworkTestCase
 {
     /** @test */
-    public function it_can_add_a_result()
+    public function it_will_error_when_title_is_missing_from_item()
+    {
+        $this->expectExceptionMessage('Title missing from item: {"icon":{"path":"icon.png","type":"filetype"}}');
+
+        $workflow = new Workflow;
+        $workflow->item()->iconFromFileType('icon.png');
+        $workflow->output(false);
+    }
+
+    /** @test */
+    public function it_can_add_an_item()
     {
         $workflow = new Workflow;
 
@@ -63,7 +73,7 @@ class TestCase extends FrameworkTestCase
     }
 
     /** @test */
-    public function it_can_add_multiple_results()
+    public function it_can_add_multiple_items()
     {
         $workflow = new Workflow;
 
@@ -168,11 +178,12 @@ class TestCase extends FrameworkTestCase
     {
         $workflow = new Workflow;
 
-        $workflow->item()->type('file', false);
+        $workflow->item()->title('Skipcheck')->type('file', false);
 
         $expected = [
             'items' => [
                 [
+                    'title' => 'Skipcheck',
                     'type'  => 'file:skipcheck',
                 ],
             ],
@@ -186,7 +197,9 @@ class TestCase extends FrameworkTestCase
     {
         $workflow = new Workflow;
 
-        $workflow->item()->cmd('Hit Command', 'command-it', false)
+        $workflow->item()
+            ->title('Command Shift')
+            ->cmd('Hit Command', 'command-it', false)
             ->shift('Hit Shift', 'shift-it', true);
 
         $expected = [
@@ -204,6 +217,7 @@ class TestCase extends FrameworkTestCase
                             'valid'    => true,
                         ],
                     ],
+                    'title' => 'Command Shift',
                 ],
             ],
         ];
@@ -216,7 +230,9 @@ class TestCase extends FrameworkTestCase
     {
         $workflow = new Workflow;
 
-        $workflow->item()->fileiconIcon('icon.png');
+        $workflow->item()
+            ->title('Icon from File')
+            ->iconFromFile('icon.png');
 
         $expected = [
             'items' => [
@@ -225,6 +241,7 @@ class TestCase extends FrameworkTestCase
                         'path' => 'icon.png',
                         'type' => 'fileicon',
                     ],
+                    'title' => 'Icon from File',
                 ],
             ],
         ];
@@ -237,7 +254,9 @@ class TestCase extends FrameworkTestCase
     {
         $workflow = new Workflow;
 
-        $workflow->item()->filetypeIcon('icon.png');
+        $workflow->item()
+            ->title('Icon from File Type')
+            ->iconFromFileType('icon.png');
 
         $expected = [
             'items' => [
@@ -246,6 +265,7 @@ class TestCase extends FrameworkTestCase
                         'path' => 'icon.png',
                         'type' => 'filetype',
                     ],
+                    'title' => 'Icon from File Type',
                 ],
             ],
         ];
@@ -254,7 +274,7 @@ class TestCase extends FrameworkTestCase
     }
 
     /** @test */
-    public function it_can_sort_results_by_defaults()
+    public function it_can_sort_items_by_defaults()
     {
         $workflow = new Workflow;
 
@@ -287,7 +307,7 @@ class TestCase extends FrameworkTestCase
     }
 
     /** @test */
-    public function it_can_sort_results_desc()
+    public function it_can_sort_items_desc()
     {
         $workflow = new Workflow;
 
@@ -320,7 +340,7 @@ class TestCase extends FrameworkTestCase
     }
 
     /** @test */
-    public function it_can_sort_results_by_field()
+    public function it_can_sort_items_by_field()
     {
         $workflow = new Workflow;
 
@@ -353,7 +373,7 @@ class TestCase extends FrameworkTestCase
     }
 
     /** @test */
-    public function it_can_filter_results()
+    public function it_can_filter_items()
     {
         $workflow = new Workflow;
 
@@ -381,7 +401,7 @@ class TestCase extends FrameworkTestCase
     }
 
     /** @test */
-    public function it_can_filter_results_by_a_different_key()
+    public function it_can_filter_items_by_a_different_key()
     {
         $workflow = new Workflow;
 
