@@ -91,10 +91,8 @@ class Workflow
      * @param mixed $value
      *
      * @link https://www.alfredapp.com/help/workflows/inputs/script-filter/json/#variables
-     *
-     * @return \Alfred\Workflows\Workflow
      */
-    public function variable($key, $value): Workflow
+    public function variable(string $key, $value): Workflow
     {
         $this->variables[$key] = $value;
 
@@ -128,13 +126,8 @@ class Workflow
 
     /**
      * Sort the current items
-     *
-     * @param string $direction
-     * @param string $property
-     *
-     * @return \Alfred\Workflows\Workflow
      */
-    public function sortItems($direction = 'asc', $property = 'title')
+    public function sortItems(string $direction = 'asc', string $property = 'title'): Workflow
     {
         usort($this->items, function ($a, $b) use ($direction, $property) {
             if ($direction === 'asc') {
@@ -149,13 +142,8 @@ class Workflow
 
     /**
      * Filter current items (destructive)
-     *
-     * @param string $query
-     * @param string $property
-     *
-     * @return \Alfred\Workflows\Workflow
      */
-    public function filterItems($query, $property = 'title')
+    public function filterItems(string $query, string $property = 'title'): Workflow
     {
         if ($query === null || trim($query) === '') {
             return $this;
@@ -170,12 +158,7 @@ class Workflow
         return $this;
     }
 
-    /**
-     * Output
-     *
-     * @return string
-     */
-    public function output($echo = true)
+    public function output(bool $echo = true)
     {
         /**
          * Force IDE to understand that this is now an array of arrays
