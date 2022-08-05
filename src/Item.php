@@ -2,6 +2,7 @@
 
 namespace Alfred\Workflows;
 
+use Alfred\Workflows\ItemParam\Action;
 use Alfred\Workflows\ItemParam\HasAnIcon;
 use Alfred\Workflows\ItemParam\MergesParams;
 use Alfred\Workflows\ItemParam\Mod;
@@ -219,6 +220,35 @@ class Item
         $this->params['autocomplete'] = $autocomplete;
 
         return $this;
+    }
+
+    /**
+     * New in Alfred 4.5
+     *
+     * This element defines the Universal Action items used when actioning the result,
+     * and overrides arg being used for actioning. The action key can take a string or
+     * array for simple types', and the content type will automatically be derived by
+     * Alfred to file, url or text.
+     *
+     * @link https://www.alfredapp.com/help/workflows/inputs/script-filter/json/
+     *
+     * @param string|array|\Alfred\Workflows\ItemParam\Action $action
+     */
+    public function action($action): Item
+    {
+        if ($action instanceof Action) {
+            $this->params['actions'] = $action->toArray();
+
+            return $this;
+        }
+
+        if (is_string($action) || is_numeric($action) || is_array($action)) {
+            $this->params['actions'] = $action;
+
+            return $this;
+        }
+
+        throw new \Exception('Unknown `action` value, should be a string, array, or instance of \Alfred\Workflows\ItemParam\Action.');
     }
 
     /**
