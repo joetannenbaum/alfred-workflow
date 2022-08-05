@@ -82,7 +82,7 @@ class Item
      *
      * @link https://www.alfredapp.com/help/workflows/inputs/script-filter/json/
      */
-    public function iconForFile(string $path): Item
+    public function iconFromFile(string $path): Item
     {
         return $this->icon($path, Icon::TYPE_FILEICON);
     }
@@ -93,7 +93,7 @@ class Item
      *
      * @link https://www.alfredapp.com/help/workflows/inputs/script-filter/json/
      */
-    public function iconForFileType(string $type): Item
+    public function iconFromFileType(string $type): Item
     {
         return $this->icon($type, Icon::TYPE_FILETYPE);
     }
