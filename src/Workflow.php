@@ -147,11 +147,21 @@ class Workflow
      */
     public function output($echo = true)
     {
-        $output = [
-            'items' => array_map(function ($item) {
-                return $item->toArray();
-            }, array_values($this->items)),
-        ];
+        /**
+         * Force IDE to understand that this is now an array of arrays
+         * @var array
+         */
+        $items = array_map(function ($item) {
+            return $item->toArray();
+        }, array_values($this->items));
+
+        foreach ($items as $item) {
+            if (!array_key_exists('title', $item)) {
+                throw new \Exception('Title missing from item: ' . json_encode($item));
+            }
+        }
+
+        $output = compact('items');
 
         if (!empty($this->variables)) {
             $output['variables'] = $this->variables;
