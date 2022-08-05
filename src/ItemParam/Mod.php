@@ -117,4 +117,11 @@ class Mod
 
         return $this;
     }
+
+    public function toArray()
+    {
+        ksort($this->params);
+
+        return [$this->key => $this->params];
+    }
 }
