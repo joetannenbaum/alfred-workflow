@@ -74,28 +74,28 @@ class Item
     }
 
     /**
-     * Alfred will get the icon for the specified path.
+     * Alfred will get the icon for the specified file path. For example:
+     *
+     * my-image.png -> png icon
+     * Alfred.app -> Alfred Icon
+     * important-doc.pdf -> pdf icon
      *
      * @link https://www.alfredapp.com/help/workflows/inputs/script-filter/json/
-     *
-     * TODO: NAME THIS BETTER
      */
-    public function fileiconIcon(string $path): Item
+    public function iconForFile(string $path): Item
     {
         return $this->icon($path, Icon::TYPE_FILEICON);
     }
 
     /**
-     * Get the icon of a specific file,
-     * for example "path": "public.png"
+     * Get the icon of a specific file type, for example:
+     * 'public.folder', 'jpg', 'png', 'pdf', 'sketch', etc.
      *
      * @link https://www.alfredapp.com/help/workflows/inputs/script-filter/json/
-     *
-     * TODO: NAME THIS BETTER
      */
-    public function filetypeIcon(string $path): Item
+    public function iconForFileType(string $type): Item
     {
-        return $this->icon($path, Icon::TYPE_FILETYPE);
+        return $this->icon($type, Icon::TYPE_FILETYPE);
     }
 
     /**
