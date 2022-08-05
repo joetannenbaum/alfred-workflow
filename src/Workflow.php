@@ -11,6 +11,11 @@ class Workflow
 
     protected array $variables = [];
 
+    /**
+     * @var number|float
+     */
+    protected $rerun = null;
+
     protected Alfred $alfred;
 
     protected Cache $cache;
@@ -97,6 +102,31 @@ class Workflow
     }
 
     /**
+     * Scripts can be set to re-run automatically after an interval with a value of
+     * 0.1 to 5.0 seconds. The script will only be re-run if the script filter is
+     * still active and the user hasn't changed the state of the filter by typing
+     * and triggering a re-run.
+     *
+     * @param number|float $seconds
+     * @throws \Exception if $seconds is not numeric
+     * @throws \Exception if $second is not within 0.1 and 5.0
+     */
+    public function rerun($seconds): Workflow
+    {
+        if (!is_numeric($seconds)) {
+            throw new \Exception('Re-run $seconds must be numeric');
+        }
+
+        if ($seconds < 0.1 || $seconds > 5) {
+            throw new \Exception('Re-run $seconds must be between 0.1 and 5.0 seconds');
+        }
+
+        $this->rerun = $seconds;
+
+        return $this;
+    }
+
+    /**
      * Sort the current items
      *
      * @param string $direction
@@ -166,6 +196,10 @@ class Workflow
         if (!empty($this->variables)) {
             $output['variables'] = $this->variables;
         };
+
+        if ($this->rerun !== null) {
+            $output['rerun'] = $this->rerun;
+        }
 
         $json = json_encode($output);
 

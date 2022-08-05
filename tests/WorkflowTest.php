@@ -10,7 +10,7 @@ class TestCase extends FrameworkTestCase
     {
         $this->expectExceptionMessage('Title missing from item: {"icon":{"path":"icon.png","type":"filetype"}}');
 
-        $workflow = new Workflow;
+        $workflow = new Workflow();
         $workflow->item()->iconFromFileType('icon.png');
         $workflow->output(false);
     }
@@ -18,7 +18,7 @@ class TestCase extends FrameworkTestCase
     /** @test */
     public function it_can_add_an_item()
     {
-        $workflow = new Workflow;
+        $workflow = new Workflow();
 
         $workflow->item()
             ->uid('THE ID')
@@ -75,7 +75,7 @@ class TestCase extends FrameworkTestCase
     /** @test */
     public function it_can_add_multiple_items()
     {
-        $workflow = new Workflow;
+        $workflow = new Workflow();
 
         $workflow->item()
             ->uid('THE ID')
@@ -176,7 +176,7 @@ class TestCase extends FrameworkTestCase
     /** @test */
     public function it_can_handle_a_file_skipcheck_via_arguments()
     {
-        $workflow = new Workflow;
+        $workflow = new Workflow();
 
         $workflow->item()->title('Skipcheck')->type('file', false);
 
@@ -195,7 +195,7 @@ class TestCase extends FrameworkTestCase
     /** @test */
     public function it_can_add_mods_via_shortcuts()
     {
-        $workflow = new Workflow;
+        $workflow = new Workflow();
 
         $workflow->item()
             ->title('Command Shift')
@@ -228,7 +228,7 @@ class TestCase extends FrameworkTestCase
     /** @test */
     public function it_can_handle_file_icon_via_shortcut()
     {
-        $workflow = new Workflow;
+        $workflow = new Workflow();
 
         $workflow->item()
             ->title('Icon from File')
@@ -252,7 +252,7 @@ class TestCase extends FrameworkTestCase
     /** @test */
     public function it_can_handle_file_type_via_shortcut()
     {
-        $workflow = new Workflow;
+        $workflow = new Workflow();
 
         $workflow->item()
             ->title('Icon from File Type')
@@ -274,9 +274,50 @@ class TestCase extends FrameworkTestCase
     }
 
     /** @test */
+    public function it_can_rerun_workflow()
+    {
+        $workflow = new Workflow();
+
+        $workflow->item()->title('Re-run please');
+
+        $workflow->rerun(4);
+
+        $expected = [
+            'items' => [
+                [
+                    'title' => 'Re-run please',
+                ],
+            ],
+            'rerun' => 4,
+        ];
+
+        $this->assertSame(json_encode($expected), $workflow->output(false));
+    }
+
+    /** @test */
+    public function it_will_error_if_rerun_is_out_of_range()
+    {
+        $this->expectExceptionMessage('Re-run $seconds must be between 0.1 and 5.0 seconds');
+        $workflow = new Workflow();
+        $workflow->item()->title('Re-run please');
+        $workflow->rerun(10);
+        $workflow->output(false);
+    }
+
+    /** @test */
+    public function it_will_error_if_rerun_is_not_numeric()
+    {
+        $this->expectExceptionMessage('Re-run $seconds must be numeric');
+        $workflow = new Workflow();
+        $workflow->item()->title('Re-run please');
+        $workflow->rerun('poodle');
+        $workflow->output(false);
+    }
+
+    /** @test */
     public function it_can_sort_items_by_defaults()
     {
-        $workflow = new Workflow;
+        $workflow = new Workflow();
 
         $workflow->item()
             ->uid('THE ID')
@@ -309,7 +350,7 @@ class TestCase extends FrameworkTestCase
     /** @test */
     public function it_can_sort_items_desc()
     {
-        $workflow = new Workflow;
+        $workflow = new Workflow();
 
         $workflow->item()
             ->uid('THE ID')
@@ -342,7 +383,7 @@ class TestCase extends FrameworkTestCase
     /** @test */
     public function it_can_sort_items_by_field()
     {
-        $workflow = new Workflow;
+        $workflow = new Workflow();
 
         $workflow->item()
             ->uid('456')
@@ -375,7 +416,7 @@ class TestCase extends FrameworkTestCase
     /** @test */
     public function it_can_filter_items()
     {
-        $workflow = new Workflow;
+        $workflow = new Workflow();
 
         $workflow->item()
             ->uid('THE ID')
@@ -403,7 +444,7 @@ class TestCase extends FrameworkTestCase
     /** @test */
     public function it_can_filter_items_by_a_different_key()
     {
-        $workflow = new Workflow;
+        $workflow = new Workflow();
 
         $workflow->item()
             ->uid('THE ID')
@@ -431,7 +472,7 @@ class TestCase extends FrameworkTestCase
     /** @test */
     public function it_can_add_variables()
     {
-        $workflow = new Workflow;
+        $workflow = new Workflow();
 
         $workflow->variable('fruit', 'apple')
             ->variable('vegetables', 'carrots');
