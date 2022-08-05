@@ -1,5 +1,6 @@
 <?php
 
+use Alfred\Workflows\ItemParam\Mod;
 use Alfred\Workflows\Workflow;
 use PHPUnit\Framework\TestCase as FrameworkTestCase;
 
@@ -29,8 +30,8 @@ class TestCase extends FrameworkTestCase
             ->arg('ARGUMENT')
             ->valid(false)
             ->icon('icon.png')
-            ->mod('cmd', 'Do Something Different', 'something-different')
-            ->mod('shift', 'Another Different', 'another-different', false)
+            ->mod(Mod::cmd()->subtitle('Do Something Different')->arg('something-different'))
+            ->mod(Mod::shift()->subtitle('Another Different')->arg('another-different')->valid(false))
             ->copy('Please copy this')
             ->largetype('This will be huge')
             ->autocomplete('AutoComplete This');
@@ -45,13 +46,12 @@ class TestCase extends FrameworkTestCase
                     ],
                     'mods' => [
                         'cmd' => [
-                            'subtitle' => 'Do Something Different',
                             'arg'      => 'something-different',
-                            'valid'    => true,
+                            'subtitle' => 'Do Something Different',
                         ],
                         'shift' => [
-                            'subtitle' => 'Another Different',
                             'arg'      => 'another-different',
+                            'subtitle' => 'Another Different',
                             'valid'    => false,
                         ],
                     ],
@@ -86,8 +86,8 @@ class TestCase extends FrameworkTestCase
             ->arg('ARGUMENT')
             ->valid(false)
             ->icon('icon.png')
-            ->mod('cmd', 'Do Something Different', 'something-different')
-            ->mod('shift', 'Another Different', 'another-different', false)
+            ->mod(Mod::cmd()->subtitle('Do Something Different')->arg('something-different'))
+            ->mod(Mod::shift()->subtitle('Another Different')->arg('another-different')->valid(false))
             ->copy('Please copy this')
             ->largetype('This will be huge')
             ->autocomplete('AutoComplete This');
@@ -101,8 +101,8 @@ class TestCase extends FrameworkTestCase
             ->arg('ARGUMENT 2')
             ->valid(true)
             ->icon('icon2.png')
-            ->mod('cmd', 'Do Something Different 2', 'something-different 2')
-            ->mod('shift', 'Another Different 2', 'another-different 2', false)
+            ->mod(Mod::cmd()->subtitle('Do Something Different 2')->arg('something-different 2'))
+            ->mod(Mod::shift()->subtitle('Another Different 2')->arg('another-different 2')->valid(false))
             ->copy('Please copy this 2')
             ->largetype('This will be huge 2')
             ->autocomplete('AutoComplete This 2');
@@ -117,13 +117,12 @@ class TestCase extends FrameworkTestCase
                     ],
                     'mods' => [
                         'cmd' => [
-                            'subtitle' => 'Do Something Different',
                             'arg'      => 'something-different',
-                            'valid'    => true,
+                            'subtitle' => 'Do Something Different',
                         ],
                         'shift' => [
-                            'subtitle' => 'Another Different',
                             'arg'      => 'another-different',
+                            'subtitle' => 'Another Different',
                             'valid'    => false,
                         ],
                     ],
@@ -146,13 +145,12 @@ class TestCase extends FrameworkTestCase
                     ],
                     'mods' => [
                         'cmd' => [
-                            'subtitle' => 'Do Something Different 2',
                             'arg'      => 'something-different 2',
-                            'valid'    => true,
+                            'subtitle' => 'Do Something Different 2',
                         ],
                         'shift' => [
-                            'subtitle' => 'Another Different 2',
                             'arg'      => 'another-different 2',
+                            'subtitle' => 'Another Different 2',
                             'valid'    => false,
                         ],
                     ],
@@ -199,21 +197,21 @@ class TestCase extends FrameworkTestCase
 
         $workflow->item()
             ->title('Command Shift')
-            ->cmd('Hit Command', 'command-it', false)
-            ->shift('Hit Shift', 'shift-it', true);
+            ->mod(Mod::cmd()->subtitle('Hit Command')->arg('command-it')->valid(false))
+            ->mod(Mod::shift()->subtitle('Hit Shift')->arg('shift-it')->valid(true));
 
         $expected = [
             'items' => [
                 [
                     'mods' => [
                         'cmd' => [
-                            'subtitle' => 'Hit Command',
                             'arg'      => 'command-it',
+                            'subtitle' => 'Hit Command',
                             'valid'    => false,
                         ],
                         'shift' => [
-                            'subtitle' => 'Hit Shift',
                             'arg'      => 'shift-it',
+                            'subtitle' => 'Hit Shift',
                             'valid'    => true,
                         ],
                     ],
@@ -486,8 +484,8 @@ class TestCase extends FrameworkTestCase
             ->arg('ARGUMENT')
             ->valid(false)
             ->icon('icon.png')
-            ->mod('cmd', 'Do Something Different', 'something-different')
-            ->mod('shift', 'Another Different', 'another-different', false)
+            ->mod(Mod::cmd()->subtitle('Do Something Different')->arg('something-different'))
+            ->mod(Mod::shift()->subtitle('Another Different')->arg('another-different')->valid(false))
             ->copy('Please copy this')
             ->largetype('This will be huge')
             ->autocomplete('AutoComplete This');
@@ -502,13 +500,12 @@ class TestCase extends FrameworkTestCase
                     ],
                     'mods' => [
                         'cmd' => [
-                            'subtitle' => 'Do Something Different',
                             'arg'      => 'something-different',
-                            'valid'    => true,
+                            'subtitle' => 'Do Something Different',
                         ],
                         'shift' => [
-                            'subtitle' => 'Another Different',
                             'arg'      => 'another-different',
+                            'subtitle' => 'Another Different',
                             'valid'    => false,
                         ],
                     ],

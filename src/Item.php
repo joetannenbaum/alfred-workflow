@@ -2,13 +2,16 @@
 
 namespace Alfred\Workflows;
 
-use Alfred\Workflows\ItemParam\Icon;
+use Alfred\Workflows\ItemParam\HasAnIcon;
+use Alfred\Workflows\ItemParam\MergesParams;
 use Alfred\Workflows\ItemParam\Mod;
 use Alfred\Workflows\ItemParam\Text;
 use Alfred\Workflows\ItemParam\Type;
 
 class Item
 {
+    use MergesParams, HasAnIcon;
+
     /**
      * @var array
      */
@@ -49,53 +52,6 @@ class Item
         $this->params['type'] = Type::handle($type, $verify_existence);
 
         return $this;
-    }
-
-    /**
-     * The icon displayed in the result row. Workflows are run from their
-     * workflow folder, so you can reference icons stored in your
-     * workflow relatively.
-     *
-     * By omitting the "type", Alfred will load the file path itself, for
-     * example a png. By using "type": "fileicon", Alfred will get the icon
-     * for the specified path. Finally, by using "type": "filetype", you can
-     * get the icon of a specific file, for example "path": "public.png"
-     *
-     * @link https://www.alfredapp.com/help/workflows/inputs/script-filter/json/
-     *
-     * @param string $path
-     * @param \Alfred\Workflows\Item\Icon::TYPE_* $type
-     */
-    public function icon(string $path, $type = null): Item
-    {
-        $this->params['icon'] = Icon::handle($path, $type);
-
-        return $this;
-    }
-
-    /**
-     * Alfred will get the icon for the specified file path. For example:
-     *
-     * my-image.png -> png icon
-     * Alfred.app -> Alfred Icon
-     * important-doc.pdf -> pdf icon
-     *
-     * @link https://www.alfredapp.com/help/workflows/inputs/script-filter/json/
-     */
-    public function iconFromFile(string $path): Item
-    {
-        return $this->icon($path, Icon::TYPE_FILEICON);
-    }
-
-    /**
-     * Get the icon of a specific file type, for example:
-     * 'public.folder', 'jpg', 'png', 'pdf', 'sketch', etc.
-     *
-     * @link https://www.alfredapp.com/help/workflows/inputs/script-filter/json/
-     */
-    public function iconFromFileType(string $type): Item
-    {
-        return $this->icon($type, Icon::TYPE_FILETYPE);
     }
 
     /**
@@ -158,69 +114,12 @@ class Item
      * if actioned with the modifier.
      *
      * @link https://www.alfredapp.com/help/workflows/inputs/script-filter/json/
-     *
-     * @param \Alfred\Workflows\Item::MOD_* $mod
-     * @param string $subtitle
-     * @param string $arg
-     * @param bool $valid
-     *
-     * TODO: Add variable option to this, also this is a ton of arguments, can we make easier?
      */
-    public function mod($mod, string $subtitle, string $arg, bool $valid = true): Item
+    public function mod(Mod $mod): Item
     {
-        $this->mergeParam('mods', Mod::handle($mod, $subtitle, $arg, $valid));
+        $this->mergeParam('mods', $mod->toArray());
 
         return $this;
-    }
-
-    /**
-     * Define validity, arg, and variable using the cmd modifier.
-     *
-     * @link https://www.alfredapp.com/help/workflows/inputs/script-filter/json/
-     */
-    public function cmd(string $subtitle, string $arg, bool $valid = true): Item
-    {
-        return $this->mod(Mod::MOD_CMD, $subtitle, $arg, $valid);
-    }
-
-    /**
-     * Define validity, arg, and variable using the shift modifier.
-     *
-     * @link https://www.alfredapp.com/help/workflows/inputs/script-filter/json/
-     */
-    public function shift(string $subtitle, string $arg, bool $valid = true): Item
-    {
-        return $this->mod(Mod::MOD_SHIFT, $subtitle, $arg, $valid);
-    }
-
-    /**
-     * Define validity, arg, and variable using the fn modifier.
-     *
-     * @link https://www.alfredapp.com/help/workflows/inputs/script-filter/json/
-     */
-    public function fn(string $subtitle, string $arg, bool $valid = true): Item
-    {
-        return $this->mod(Mod::MOD_FN, $subtitle, $arg, $valid);
-    }
-
-    /**
-     * Define validity, arg, and variable using the ctrl modifier.
-     *
-     * @link https://www.alfredapp.com/help/workflows/inputs/script-filter/json/
-     */
-    public function ctrl(string $subtitle, string $arg, bool $valid = true): Item
-    {
-        return $this->mod(Mod::MOD_CTRL, $subtitle, $arg, $valid);
-    }
-
-    /**
-     * Define validity, arg, and variable using the alt modifier.
-     *
-     * @link https://www.alfredapp.com/help/workflows/inputs/script-filter/json/
-     */
-    public function alt(string $subtitle, string $arg, bool $valid = true): Item
-    {
-        return $this->mod(Mod::MOD_ALT, $subtitle, $arg, $valid);
     }
 
     /**
@@ -320,18 +219,6 @@ class Item
         $this->params['autocomplete'] = $autocomplete;
 
         return $this;
-    }
-
-    /**
-     * Merge a param if it exists, create a new key if it doesn't
-     */
-    protected function mergeParam(string $key, array $value): void
-    {
-        if (array_key_exists($key, $this->params)) {
-            $this->params[$key] = array_merge($this->params[$key], $value);
-        } else {
-            $this->params[$key] = $value;
-        }
     }
 
     /**

@@ -4,30 +4,128 @@ namespace Alfred\Workflows\ItemParam;
 
 class Mod
 {
-    const MOD_SHIFT = 'shift';
+    use MergesParams, HasAnIcon;
 
-    const MOD_FN = 'fn';
+    const KEY_SHIFT = 'shift';
 
-    const MOD_CTRL = 'ctrl';
+    const KEY_FN = 'fn';
 
-    const MOD_ALT = 'alt';
+    const KEY_CTRL = 'ctrl';
 
-    const MOD_CMD = 'cmd';
+    const KEY_ALT = 'alt';
+
+    const KEY_CMD = 'cmd';
 
     /**
-     * @param \Alfred\Workflows\ItemParam\Mod::MOD_* $mod
-     * @param string $subtitle
-     * @param string $arg
-     * @param bool $valid
-     * @throws \Exception when $type is invalid
-     * @return array
+     * @var \Alfred\Workflows\ItemParam\Mod::KEY_*
      */
-    public static function handle($mod, $subtitle, $arg, $valid)
+    protected $key;
+
+    protected array $params = [];
+
+    protected array $variables = [];
+
+    /**
+     * @param \Alfred\Workflows\ItemParam\Mod::KEY_* $key
+     * @throws \Exception when $type is invalid
+     */
+    public function __construct($key)
     {
-        if (!in_array($mod, [self::MOD_SHIFT, self::MOD_FN, self::MOD_CTRL, self::MOD_ALT, self::MOD_CMD])) {
-            throw new \Exception('Invalid mod [' . $mod . '], use \Alfred\Workflows\ItemParam\Mod::MOD_*');
+        if (!in_array($key, [self::KEY_SHIFT, self::KEY_FN, self::KEY_CTRL, self::KEY_ALT, self::KEY_CMD])) {
+            throw new \Exception('Invalid mod [' . $key . '], use \Alfred\Workflows\ItemParam\Mod::KEY_*');
         }
 
-        return [$mod => compact('subtitle', 'arg', 'valid')];
+        $this->key = $key;
+    }
+
+    /**
+     * Instantiate a new Mod instance using a specified mod key.
+     *
+     * @param \Alfred\Workflows\ItemParam\Mod::KEY_* $mod
+     */
+    public static function key($key): Mod
+    {
+        return new Mod($key);
+    }
+
+    public static function shift()
+    {
+        return new Mod(self::KEY_SHIFT);
+    }
+
+    public static function fn()
+    {
+        return new Mod(self::KEY_FN);
+    }
+
+    public static function ctrl()
+    {
+        return new Mod(self::KEY_CTRL);
+    }
+
+    public static function alt()
+    {
+        return new Mod(self::KEY_ALT);
+    }
+
+    public static function cmd()
+    {
+        return new Mod(self::KEY_CMD);
+    }
+
+    public function subtitle(string $subtitle): Mod
+    {
+        $this->params['subtitle'] = $subtitle;
+
+        return $this;
+    }
+
+    public function arg(string $arg): Mod
+    {
+        $this->params['arg'] = $arg;
+
+        return $this;
+    }
+
+    public function valid(bool $valid): Mod
+    {
+        $this->params['valid'] = !!$valid;
+
+        return $this;
+    }
+
+    public function icon(bool $valid): Mod
+    {
+        $this->valid = !!$valid;
+
+        return $this;
+    }
+
+    /**
+     * Variables can be passed out of the script filter within a variables object.
+     * This is useful for two things. Firstly, these variables will be passed out of
+     * the script filter's outputs when actioning a result. Secondly, any variables
+     * passed out of a script will be passed back in as environment variables when the
+     * script is run within the same session. This can be used for very simply
+     * managing state between runs as the user types input or when the script is set
+     * to re-run after an interval.
+     *
+     * @param string $key
+     * @param mixed $value
+     *
+     * @link https://www.alfredapp.com/help/workflows/inputs/script-filter/json/#variables
+     */
+    public function variable(string $key, $value): Mod
+    {
+        $this->mergeParam('variables', [$key => $value]);
+
+        return $this;
+    }
+
+    public function toArray()
+    {
+        ksort($this->params);
+
+        return [$this->key => $this->params];
     }
 }
