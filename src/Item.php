@@ -237,13 +237,13 @@ class Item
     public function action($action): Item
     {
         if ($action instanceof Action) {
-            $this->params['actions'] = $action->toArray();
+            $this->params['action'] = $action->toArray();
 
             return $this;
         }
 
         if (is_string($action) || is_numeric($action) || is_array($action)) {
-            $this->params['actions'] = $action;
+            $this->params['action'] = $action;
 
             return $this;
         }
