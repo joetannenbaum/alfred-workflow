@@ -23,8 +23,6 @@ class Mod
 
     protected array $params = [];
 
-    protected array $variables = [];
-
     /**
      * @param \Alfred\Workflows\ItemParam\Mod::KEY_* $key
      * @throws \Exception when $type is invalid
