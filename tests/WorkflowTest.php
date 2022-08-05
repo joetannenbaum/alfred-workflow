@@ -10,7 +10,7 @@ class TestCase extends FrameworkTestCase
     {
         $workflow = new Workflow;
 
-        $workflow->result()
+        $workflow->item()
             ->uid('THE ID')
             ->title('Item Title')
             ->subtitle('Item Subtitle')
@@ -59,7 +59,7 @@ class TestCase extends FrameworkTestCase
             ],
         ];
 
-        $this->assertSame(json_encode($expected), $workflow->output());
+        $this->assertSame(json_encode($expected), $workflow->output(false));
     }
 
     /** @test */
@@ -67,7 +67,7 @@ class TestCase extends FrameworkTestCase
     {
         $workflow = new Workflow;
 
-        $workflow->result()
+        $workflow->item()
             ->uid('THE ID')
             ->title('Item Title')
             ->subtitle('Item Subtitle')
@@ -82,7 +82,7 @@ class TestCase extends FrameworkTestCase
             ->largetype('This will be huge')
             ->autocomplete('AutoComplete This');
 
-        $workflow->result()
+        $workflow->item()
             ->uid('THE ID 2')
             ->title('Item Title 2')
             ->subtitle('Item Subtitle 2')
@@ -160,7 +160,7 @@ class TestCase extends FrameworkTestCase
             ],
         ];
 
-        $this->assertSame(json_encode($expected), $workflow->output());
+        $this->assertSame(json_encode($expected), $workflow->output(false));
     }
 
     /** @test */
@@ -168,18 +168,17 @@ class TestCase extends FrameworkTestCase
     {
         $workflow = new Workflow;
 
-        $workflow->result()->type('file', false);
+        $workflow->item()->type('file', false);
 
         $expected = [
             'items' => [
                 [
                     'type'  => 'file:skipcheck',
-                    'valid' => true,
                 ],
             ],
         ];
 
-        $this->assertSame(json_encode($expected), $workflow->output());
+        $this->assertSame(json_encode($expected), $workflow->output(false));
     }
 
     /** @test */
@@ -187,7 +186,7 @@ class TestCase extends FrameworkTestCase
     {
         $workflow = new Workflow;
 
-        $workflow->result()->cmd('Hit Command', 'command-it', false)
+        $workflow->item()->cmd('Hit Command', 'command-it', false)
             ->shift('Hit Shift', 'shift-it', true);
 
         $expected = [
@@ -205,12 +204,11 @@ class TestCase extends FrameworkTestCase
                             'valid'    => true,
                         ],
                     ],
-                    'valid' => true,
                 ],
             ],
         ];
 
-        $this->assertSame(json_encode($expected), $workflow->output());
+        $this->assertSame(json_encode($expected), $workflow->output(false));
     }
 
     /** @test */
@@ -218,7 +216,7 @@ class TestCase extends FrameworkTestCase
     {
         $workflow = new Workflow;
 
-        $workflow->result()->fileiconIcon('icon.png');
+        $workflow->item()->fileiconIcon('icon.png');
 
         $expected = [
             'items' => [
@@ -227,12 +225,11 @@ class TestCase extends FrameworkTestCase
                         'path' => 'icon.png',
                         'type' => 'fileicon',
                     ],
-                    'valid' => true,
                 ],
             ],
         ];
 
-        $this->assertSame(json_encode($expected), $workflow->output());
+        $this->assertSame(json_encode($expected), $workflow->output(false));
     }
 
     /** @test */
@@ -240,7 +237,7 @@ class TestCase extends FrameworkTestCase
     {
         $workflow = new Workflow;
 
-        $workflow->result()->filetypeIcon('icon.png');
+        $workflow->item()->filetypeIcon('icon.png');
 
         $expected = [
             'items' => [
@@ -249,12 +246,11 @@ class TestCase extends FrameworkTestCase
                         'path' => 'icon.png',
                         'type' => 'filetype',
                     ],
-                    'valid' => true,
                 ],
             ],
         ];
 
-        $this->assertSame(json_encode($expected), $workflow->output());
+        $this->assertSame(json_encode($expected), $workflow->output(false));
     }
 
     /** @test */
@@ -262,12 +258,12 @@ class TestCase extends FrameworkTestCase
     {
         $workflow = new Workflow;
 
-        $workflow->result()
+        $workflow->item()
             ->uid('THE ID')
             ->title('Item Title')
             ->subtitle('Item Subtitle');
 
-        $workflow->result()
+        $workflow->item()
             ->uid('THE ID 2')
             ->title('Item Title 2')
             ->subtitle('Item Subtitle 2');
@@ -278,18 +274,16 @@ class TestCase extends FrameworkTestCase
                     'subtitle'     => 'Item Subtitle',
                     'title'        => 'Item Title',
                     'uid'          => 'THE ID',
-                    'valid'        => true,
                 ],
                 [
                     'subtitle'     => 'Item Subtitle 2',
                     'title'        => 'Item Title 2',
                     'uid'          => 'THE ID 2',
-                    'valid'        => true,
                 ],
             ],
         ];
 
-        $this->assertSame(json_encode($expected), $workflow->sortResults()->output());
+        $this->assertSame(json_encode($expected), $workflow->sortItems()->output(false));
     }
 
     /** @test */
@@ -297,12 +291,12 @@ class TestCase extends FrameworkTestCase
     {
         $workflow = new Workflow;
 
-        $workflow->result()
+        $workflow->item()
             ->uid('THE ID')
             ->title('Item Title')
             ->subtitle('Item Subtitle');
 
-        $workflow->result()
+        $workflow->item()
             ->uid('THE ID 2')
             ->title('Item Title 2')
             ->subtitle('Item Subtitle 2');
@@ -313,18 +307,16 @@ class TestCase extends FrameworkTestCase
                     'subtitle'     => 'Item Subtitle 2',
                     'title'        => 'Item Title 2',
                     'uid'          => 'THE ID 2',
-                    'valid'        => true,
                 ],
                 [
                     'subtitle'     => 'Item Subtitle',
                     'title'        => 'Item Title',
                     'uid'          => 'THE ID',
-                    'valid'        => true,
                 ],
             ],
         ];
 
-        $this->assertSame(json_encode($expected), $workflow->sortResults('desc')->output());
+        $this->assertSame(json_encode($expected), $workflow->sortItems('desc')->output(false));
     }
 
     /** @test */
@@ -332,12 +324,12 @@ class TestCase extends FrameworkTestCase
     {
         $workflow = new Workflow;
 
-        $workflow->result()
+        $workflow->item()
             ->uid('456')
             ->title('Item Title')
             ->subtitle('Item Subtitle');
 
-        $workflow->result()
+        $workflow->item()
             ->uid('123')
             ->title('Item Title 2')
             ->subtitle('Item Subtitle 2');
@@ -348,18 +340,16 @@ class TestCase extends FrameworkTestCase
                     'subtitle'     => 'Item Subtitle 2',
                     'title'        => 'Item Title 2',
                     'uid'          => '123',
-                    'valid'        => true,
                 ],
                 [
                     'subtitle'     => 'Item Subtitle',
                     'title'        => 'Item Title',
                     'uid'          => '456',
-                    'valid'        => true,
                 ],
             ],
         ];
 
-        $this->assertSame(json_encode($expected), $workflow->sortResults('asc', 'uid')->output());
+        $this->assertSame(json_encode($expected), $workflow->sortItems('asc', 'uid')->output(false));
     }
 
     /** @test */
@@ -367,12 +357,12 @@ class TestCase extends FrameworkTestCase
     {
         $workflow = new Workflow;
 
-        $workflow->result()
+        $workflow->item()
             ->uid('THE ID')
             ->title('Item Title')
             ->subtitle('Item Subtitle');
 
-        $workflow->result()
+        $workflow->item()
             ->uid('THE ID 2')
             ->title('Item Title 2')
             ->subtitle('Item Subtitle 2');
@@ -383,12 +373,11 @@ class TestCase extends FrameworkTestCase
                     'subtitle'     => 'Item Subtitle 2',
                     'title'        => 'Item Title 2',
                     'uid'          => 'THE ID 2',
-                    'valid'        => true,
                 ],
             ],
         ];
 
-        $this->assertSame(json_encode($expected), $workflow->filterResults(2)->output());
+        $this->assertSame(json_encode($expected), $workflow->filterItems(2)->output(false));
     }
 
     /** @test */
@@ -396,12 +385,12 @@ class TestCase extends FrameworkTestCase
     {
         $workflow = new Workflow;
 
-        $workflow->result()
+        $workflow->item()
             ->uid('THE ID')
             ->title('Item Title')
             ->subtitle('Item Subtitle');
 
-        $workflow->result()
+        $workflow->item()
             ->uid('THE ID 2')
             ->title('Item Title 2')
             ->subtitle('Item Subtitle 2');
@@ -412,12 +401,11 @@ class TestCase extends FrameworkTestCase
                     'subtitle'     => 'Item Subtitle 2',
                     'title'        => 'Item Title 2',
                     'uid'          => 'THE ID 2',
-                    'valid'        => true,
                 ],
             ],
         ];
 
-        $this->assertSame(json_encode($expected), $workflow->filterResults('ID 2', 'uid')->output());
+        $this->assertSame(json_encode($expected), $workflow->filterItems('ID 2', 'uid')->output(false));
     }
 
     /** @test */
@@ -428,7 +416,7 @@ class TestCase extends FrameworkTestCase
         $workflow->variable('fruit', 'apple')
             ->variable('vegetables', 'carrots');
 
-        $workflow->result()
+        $workflow->item()
             ->uid('THE ID')
             ->title('Item Title')
             ->subtitle('Item Subtitle')
@@ -481,6 +469,6 @@ class TestCase extends FrameworkTestCase
             ]
         ];
 
-        $this->assertSame(json_encode($expected), $workflow->output());
+        $this->assertSame(json_encode($expected), $workflow->output(false));
     }
 }

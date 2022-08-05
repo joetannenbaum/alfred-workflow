@@ -4,28 +4,20 @@ namespace Alfred\Workflows;
 
 class Workflow
 {
-    protected $results = [];
-    protected $variables = [];
-
     /**
-     * @var \Alfred\Workflows\Alfred
+     * @var Item[]
      */
-    protected $alfred;
+    protected array $items = [];
 
-    /**
-     * @var \Alfred\Workflows\Cache
-     */
-    protected $cache;
+    protected array $variables = [];
 
-    /**
-     * @var \Alfred\Workflows\Data
-     */
-    protected $data;
+    protected Alfred $alfred;
 
-    /**
-     * @var \Alfred\Workflows\Logger
-     */
-    protected $logger;
+    protected Cache $cache;
+
+    protected Data $data;
+
+    protected Logger $logger;
 
     public function __construct()
     {
@@ -36,28 +28,68 @@ class Workflow
     }
 
     /**
-     * Add a result to the workflow
+     * Add a item to the workflow
      *
-     * @return \Alfred\Workflows\Result
+     * @return \Alfred\Workflows\Item
      */
-    public function result()
+    public function item(): Item
     {
-        $result = new Result;
+        $item = new Item();
 
-        $this->results[] = $result;
+        $this->items[] = $item;
 
-        return $result;
+        return $item;
     }
 
     /**
-     * Add a variables to the workflow
+     * Access the Alfred instance to read Alfred-specific environment variables
+     */
+    public function alfred(): Alfred
+    {
+        return $this->alfred;
+    }
+
+    /**
+     * Access the Cache instance to read and write from the workflow cache
+     */
+    public function cache(): Cache
+    {
+        return $this->cache;
+    }
+
+    /**
+     * Access the Cache instance to read and write from the workflow cache
+     */
+    public function data(): Data
+    {
+        return $this->data;
+    }
+
+    /**
+     * Access the Logger instance to log information while the Alfred debugger is open
+     */
+    public function logger(): Logger
+    {
+        return $this->logger;
+    }
+
+    /**
+     * Variables can be passed out of the script filter within a variables object.
+     * This is useful for two things. Firstly, these variables will be passed out of
+     * the script filter's outputs when actioning a result. Secondly, any variables
+     * passed out of a script will be passed back in as environment variables when the
+     * script is run within the same session. This can be used for very simply
+     * managing state between runs as the user types input or when the script is set
+     * to re-run after an interval.
      *
      * @param string $key
-     * @param string $value
+     * @param mixed $value
+     *
+     * @link https://www.alfredapp.com/help/workflows/inputs/script-filter/json/#variables
      *
      * @return \Alfred\Workflows\Workflow
      */
-    public function variable($key, $value)
+    public function variable($key, $value): Workflow
     {
         $this->variables[$key] = $value;
 
@@ -65,16 +97,16 @@ class Workflow
     }
 
     /**
-     * Sort the current results
+     * Sort the current items
      *
      * @param string $direction
      * @param string $property
      *
      * @return \Alfred\Workflows\Workflow
      */
-    public function sortResults($direction = 'asc', $property = 'title')
+    public function sortItems($direction = 'asc', $property = 'title')
     {
-        usort($this->results, function ($a, $b) use ($direction, $property) {
+        usort($this->items, function ($a, $b) use ($direction, $property) {
             if ($direction === 'asc') {
                 return $a->$property > $b->$property ? 1 : -1;
             }
@@ -86,14 +118,14 @@ class Workflow
     }
 
     /**
-     * Filter current results (destructive)
+     * Filter current items (destructive)
      *
      * @param string $query
      * @param string $property
      *
      * @return \Alfred\Workflows\Workflow
      */
-    public function filterResults($query, $property = 'title')
+    public function filterItems($query, $property = 'title')
     {
         if ($query === null || trim($query) === '') {
             return $this;
@@ -101,7 +133,7 @@ class Workflow
 
         $query = (string) $query;
 
-        $this->results = array_filter($this->results, function ($result) use ($query, $property) {
+        $this->items = array_filter($this->items, function ($result) use ($query, $property) {
             return stristr($result->$property, $query) !== false;
         });
 
@@ -109,42 +141,28 @@ class Workflow
     }
 
     /**
-     * Output the results as JSON
+     * Output
      *
      * @return string
      */
-    public function output()
+    public function output($echo = true)
     {
         $output = [
-            'items' => array_map(function ($result) {
-                return $result->toArray();
-            }, array_values($this->results)),
+            'items' => array_map(function ($item) {
+                return $item->toArray();
+            }, array_values($this->items)),
         ];
 
         if (!empty($this->variables)) {
             $output['variables'] = $this->variables;
         };
 
-        return json_encode($output);
-    }
+        $json = json_encode($output);
 
-    public function alfred()
-    {
-        return $this->alfred;
-    }
+        if ($echo) {
+            echo $json;
+        }
 
-    public function cache()
-    {
-        return $this->cache;
-    }
-
-    public function data()
-    {
-        return $this->data;
-    }
-
-    public function logger()
-    {
-        return $this->logger;
+        return $json;
     }
 }
