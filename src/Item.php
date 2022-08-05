@@ -4,19 +4,14 @@ namespace Alfred\Workflows;
 
 use Alfred\Workflows\ItemParam\Action;
 use Alfred\Workflows\ItemParam\HasAnIcon;
-use Alfred\Workflows\ItemParam\MergesParams;
+use Alfred\Workflows\ItemParam\HasParams;
 use Alfred\Workflows\ItemParam\Mod;
 use Alfred\Workflows\ItemParam\Text;
 use Alfred\Workflows\ItemParam\Type;
 
 class Item
 {
-    use MergesParams, HasAnIcon;
-
-    /**
-     * @var array
-     */
-    protected $params = [];
+    use HasAnIcon, HasParams;
 
     /**
      * If this item is valid or not. If an item is valid then Alfred will action this
@@ -249,16 +244,6 @@ class Item
         }
 
         throw new \Exception('Unknown `action` value, should be a string, array, or instance of \Alfred\Workflows\ItemParam\Action.');
-    }
-
-    /**
-     * Converts the results to an array structured for Alfred
-     */
-    public function toArray(): array
-    {
-        ksort($this->params);
-
-        return $this->params;
     }
 
     public function __get(string $property)

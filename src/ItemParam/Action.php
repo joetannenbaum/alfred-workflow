@@ -4,7 +4,7 @@ namespace Alfred\Workflows\ItemParam;
 
 class Action
 {
-    protected array $params = [];
+    use HasParams;
 
     public function __construct(string|array $text)
     {
@@ -42,12 +42,5 @@ class Action
         $this->params['auto'] = $auto;
 
         return $this;
-    }
-
-    public function toArray()
-    {
-        ksort($this->params);
-
-        return $this->params;
     }
 }

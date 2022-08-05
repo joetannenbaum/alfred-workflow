@@ -4,7 +4,7 @@ namespace Alfred\Workflows\ItemParam;
 
 class Mod
 {
-    use MergesParams, HasAnIcon;
+    use HasAnIcon, HasParams;
 
     const KEY_SHIFT = 'shift';
 
@@ -20,8 +20,6 @@ class Mod
      * @var \Alfred\Workflows\ItemParam\Mod::KEY_*
      */
     protected $key;
-
-    protected array $params = [];
 
     /**
      * @param \Alfred\Workflows\ItemParam\Mod::KEY_* $key
@@ -118,12 +116,5 @@ class Mod
         $this->mergeParam('variables', [$key => $value]);
 
         return $this;
-    }
-
-    public function toArray()
-    {
-        ksort($this->params);
-
-        return [$this->key => $this->params];
     }
 }

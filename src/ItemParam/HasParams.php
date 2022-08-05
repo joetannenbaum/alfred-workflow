@@ -2,8 +2,17 @@
 
 namespace Alfred\Workflows\ItemParam;
 
-trait MergesParams
+trait HasParams
 {
+    protected $params = [];
+
+    public function toArray()
+    {
+        ksort($this->params);
+
+        return $this->params;
+    }
+
     /**
      * Merge a param if it exists, create a new key if it doesn't
      */
