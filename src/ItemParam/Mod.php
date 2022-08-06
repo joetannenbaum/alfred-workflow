@@ -34,41 +34,6 @@ class Mod
         $this->key = $key;
     }
 
-    /**
-     * Instantiate a new Mod instance using a specified mod key.
-     *
-     * @param \Alfred\Workflows\ItemParam\Mod::KEY_* $mod
-     */
-    public static function key($key): Mod
-    {
-        return new Mod($key);
-    }
-
-    public static function shift()
-    {
-        return new Mod(self::KEY_SHIFT);
-    }
-
-    public static function fn()
-    {
-        return new Mod(self::KEY_FN);
-    }
-
-    public static function ctrl()
-    {
-        return new Mod(self::KEY_CTRL);
-    }
-
-    public static function alt()
-    {
-        return new Mod(self::KEY_ALT);
-    }
-
-    public static function cmd()
-    {
-        return new Mod(self::KEY_CMD);
-    }
-
     public function subtitle(string $subtitle): Mod
     {
         $this->params['subtitle'] = $subtitle;

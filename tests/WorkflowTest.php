@@ -1,6 +1,7 @@
 <?php
 
-use Alfred\Workflows\ItemParam\Mod;
+use Alfred\Workflows\ParamBuilder\Action;
+use Alfred\Workflows\ParamBuilder\Mod;
 use Alfred\Workflows\Workflow;
 use PHPUnit\Framework\TestCase as FrameworkTestCase;
 
@@ -264,6 +265,110 @@ class TestCase extends FrameworkTestCase
                         'type' => 'filetype',
                     ],
                     'title' => 'Icon from File Type',
+                ],
+            ],
+        ];
+
+        $this->assertSame(json_encode($expected), $workflow->output(false));
+    }
+
+    /** @test */
+    public function it_can_add_a_universal_action_from_a_string()
+    {
+        $workflow = new Workflow();
+
+        $workflow->item()
+            ->title('Universal Action')
+            ->action('This is the action arg.');
+
+        $expected = [
+            'items' => [
+                [
+                    'action' => 'This is the action arg.',
+                    'title' => 'Universal Action',
+                ],
+            ],
+        ];
+
+        $this->assertSame(json_encode($expected), $workflow->output(false));
+    }
+
+    /** @test */
+    public function it_can_add_a_universal_action_from_an_array()
+    {
+        $workflow = new Workflow();
+
+        $workflow->item()
+            ->title('Universal Action')
+            ->action(['first', 'second', 'third']);
+
+        $expected = [
+            'items' => [
+                [
+                    'action' => ['first', 'second', 'third'],
+                    'title' => 'Universal Action',
+                ],
+            ],
+        ];
+
+        $this->assertSame(json_encode($expected), $workflow->output(false));
+    }
+
+    /** @test */
+    public function it_can_add_a_universal_action_from_an_action_object_with_string()
+    {
+        $workflow = new Workflow();
+
+        $workflow->item()
+            ->title('Universal Action')
+            ->action(
+                Action::text('from an object!')
+                    ->url('https://joe.codes')
+                    ->file('~/Desktop/photo.jpg')
+                    ->auto('~/Desktop/document.pdf')
+            );
+
+        $expected = [
+            'items' => [
+                [
+                    'action' => [
+                        'auto' => '~/Desktop/document.pdf',
+                        'file' => '~/Desktop/photo.jpg',
+                        'text' => 'from an object!',
+                        'url' => 'https://joe.codes',
+                    ],
+                    'title' => 'Universal Action',
+                ],
+            ],
+        ];
+
+        $this->assertSame(json_encode($expected), $workflow->output(false));
+    }
+
+    /** @test */
+    public function it_can_add_a_universal_action_from_an_action_object_with_array()
+    {
+        $workflow = new Workflow();
+
+        $workflow->item()
+            ->title('Universal Action')
+            ->action(
+                Action::text(['first', 'second', 'third'])
+                    ->url('https://joe.codes')
+                    ->file('~/Desktop/photo.jpg')
+                    ->auto('~/Desktop/document.pdf')
+            );
+
+        $expected = [
+            'items' => [
+                [
+                    'action' => [
+                        'auto' => '~/Desktop/document.pdf',
+                        'file' => '~/Desktop/photo.jpg',
+                        'text' => ['first', 'second', 'third'],
+                        'url' => 'https://joe.codes',
+                    ],
+                    'title' => 'Universal Action',
                 ],
             ],
         ];

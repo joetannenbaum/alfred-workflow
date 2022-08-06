@@ -6,16 +6,6 @@ class Action
 {
     use HasParams;
 
-    public function __construct(string|array $text)
-    {
-        $this->text($text);
-    }
-
-    public static function fromText(string|array $text): Action
-    {
-        return new Action($text);
-    }
-
     public function text(string|array $text): Action
     {
         $this->params['text'] = $text;
