@@ -5,11 +5,11 @@ namespace Alfred\Workflows\ParamBuilder;
 use Alfred\Workflows\ItemParam\Mod as ItemParamMod;
 
 /**
- * @method static Alfred\Workflows\ItemParam\Mod shift()
- * @method static Alfred\Workflows\ItemParam\Mod fn()
- * @method static Alfred\Workflows\ItemParam\Mod ctrl()
- * @method static Alfred\Workflows\ItemParam\Mod alt()
- * @method static Alfred\Workflows\ItemParam\Mod cmd()
+ * @method static \Alfred\Workflows\ItemParam\Mod shift()
+ * @method static \Alfred\Workflows\ItemParam\Mod fn()
+ * @method static \Alfred\Workflows\ItemParam\Mod ctrl()
+ * @method static \Alfred\Workflows\ItemParam\Mod alt()
+ * @method static \Alfred\Workflows\ItemParam\Mod cmd()
  */
 
 class Mod

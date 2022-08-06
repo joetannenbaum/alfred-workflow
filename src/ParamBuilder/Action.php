@@ -5,10 +5,10 @@ namespace Alfred\Workflows\ParamBuilder;
 use Alfred\Workflows\ItemParam\Action as ItemParamAction;
 
 /**
- * @method static Alfred\Workflows\ItemParam\Action text(string|array $text)
- * @method static Alfred\Workflows\ItemParam\Action url(string|array $url)
- * @method static Alfred\Workflows\ItemParam\Action file(string|array $file)
- * @method static Alfred\Workflows\ItemParam\Action auto(string|array $auto)
+ * @method static \Alfred\Workflows\ItemParam\Action text(string|array $text)
+ * @method static \Alfred\Workflows\ItemParam\Action url(string|array $url)
+ * @method static \Alfred\Workflows\ItemParam\Action file(string|array $file)
+ * @method static \Alfred\Workflows\ItemParam\Action auto(string|array $auto)
  */
 
 class Action
