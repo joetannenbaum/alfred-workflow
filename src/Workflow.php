@@ -79,6 +79,25 @@ class Workflow
     }
 
     /**
+     * If a $key is provided, access that env variable with a $default fallback.
+     * If no $key is provided, return all env variables as an array.
+     *
+     * @return string|null|array
+     */
+    public function env(string $key = null, $default = null)
+    {
+        if ($key === null) {
+            return $_SERVER;
+        }
+
+        if (array_key_exists($key, $_SERVER)) {
+            return $_SERVER[$key];
+        }
+
+        return $default;
+    }
+
+    /**
      * Variables can be passed out of the script filter within a variables object.
      * This is useful for two things. Firstly, these variables will be passed out of
      * the script filter's outputs when actioning a result. Secondly, any variables
