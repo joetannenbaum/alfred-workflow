@@ -1,5 +1,7 @@
 <?php
 
+use Alfred\Workflows\ItemParam\Action as ItemParamAction;
+use Alfred\Workflows\ItemParam\Mod as ItemParamMod;
 use Alfred\Workflows\ParamBuilder\Action;
 use Alfred\Workflows\ParamBuilder\Mod;
 use Alfred\Workflows\Workflow;
@@ -192,7 +194,7 @@ class TestCase extends FrameworkTestCase
     }
 
     /** @test */
-    public function it_can_add_mods_via_shortcuts()
+    public function it_can_add_mods_via_builder()
     {
         $workflow = new Workflow();
 
@@ -200,6 +202,43 @@ class TestCase extends FrameworkTestCase
             ->title('Command Shift')
             ->mod(Mod::cmd()->subtitle('Hit Command')->arg('command-it')->valid(false))
             ->mod(Mod::shift()->subtitle('Hit Shift')->arg('shift-it')->valid(true));
+
+        $expected = [
+            'items' => [
+                [
+                    'mods' => [
+                        'cmd' => [
+                            'arg'      => 'command-it',
+                            'subtitle' => 'Hit Command',
+                            'valid'    => false,
+                        ],
+                        'shift' => [
+                            'arg'      => 'shift-it',
+                            'subtitle' => 'Hit Shift',
+                            'valid'    => true,
+                        ],
+                    ],
+                    'title' => 'Command Shift',
+                ],
+            ],
+        ];
+
+        $this->assertSame(json_encode($expected), $workflow->output(false));
+    }
+
+    /** @test */
+    public function it_can_add_mods_via_shortcut_callable()
+    {
+        $workflow = new Workflow();
+
+        $workflow->item()
+            ->title('Command Shift')
+            ->cmd(function (ItemParamMod $mod) {
+                $mod->subtitle('Hit Command')->arg('command-it')->valid(false);
+            })
+            ->shift(function (ItemParamMod $mod) {
+                $mod->subtitle('Hit Shift')->arg('shift-it')->valid(true);
+            });
 
         $expected = [
             'items' => [
@@ -285,6 +324,31 @@ class TestCase extends FrameworkTestCase
             'items' => [
                 [
                     'action' => 'This is the action arg.',
+                    'title' => 'Universal Action',
+                ],
+            ],
+        ];
+
+        $this->assertSame(json_encode($expected), $workflow->output(false));
+    }
+
+    /** @test */
+    public function it_can_add_a_universal_action_from_a_callable()
+    {
+        $workflow = new Workflow();
+
+        $workflow->item()
+            ->title('Universal Action')
+            ->action(function (ItemParamAction $action) {
+                $action->text('This is the action arg.');
+            });
+
+        $expected = [
+            'items' => [
+                [
+                    'action' => [
+                        'text' => 'This is the action arg.',
+                    ],
                     'title' => 'Universal Action',
                 ],
             ],

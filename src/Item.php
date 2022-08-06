@@ -8,6 +8,7 @@ use Alfred\Workflows\ItemParam\HasParams;
 use Alfred\Workflows\ItemParam\Mod;
 use Alfred\Workflows\ItemParam\Text;
 use Alfred\Workflows\ItemParam\Type;
+use Alfred\Workflows\ParamBuilder\Mod as ParamBuilderMod;
 
 class Item
 {
@@ -119,6 +120,65 @@ class Item
     }
 
     /**
+     * Define a cmd key mod.
+     *
+     * @link https://www.alfredapp.com/help/workflows/inputs/script-filter/json/
+     */
+    public function cmd(callable $fn): Item
+    {
+        return $this->modViaCallable(Mod::KEY_CMD, $fn);
+    }
+
+    /**
+     * Define a shift key mod.
+     *
+     * @link https://www.alfredapp.com/help/workflows/inputs/script-filter/json/
+     */
+    public function shift(callable $fn): Item
+    {
+        return $this->modViaCallable(Mod::KEY_SHIFT, $fn);
+    }
+
+    /**
+     * Define a alt key mod.
+     *
+     * @link https://www.alfredapp.com/help/workflows/inputs/script-filter/json/
+     */
+    public function alt(callable $fn): Item
+    {
+        return $this->modViaCallable(Mod::KEY_ALT, $fn);
+    }
+
+    /**
+     * Define a ctrl key mod.
+     *
+     * @link https://www.alfredapp.com/help/workflows/inputs/script-filter/json/
+     */
+    public function ctrl(callable $fn): Item
+    {
+        return $this->modViaCallable(Mod::KEY_CTRL, $fn);
+    }
+
+    /**
+     * Define a fn key mod.
+     *
+     * @link https://www.alfredapp.com/help/workflows/inputs/script-filter/json/
+     */
+    public function fn(callable $fn): Item
+    {
+        return $this->modViaCallable(Mod::KEY_FN, $fn);
+    }
+
+    protected function modViaCallable($key, callable $fn)
+    {
+        $mod = ParamBuilderMod::$key();
+
+        $fn($mod);
+
+        return $this->mod($mod);
+    }
+
+    /**
      * The match field enables you to define what Alfred matches against when
      * the workflow is set to "Alfred Filters Results". If match is present,
      * it fully replaces matching on the title property.
@@ -225,9 +285,12 @@ class Item
      * array for simple types', and the content type will automatically be derived by
      * Alfred to file, url or text.
      *
+     * If you pass in \Alfred\Workflows\ItemParam\Action or callable, you are specifying
+     * the content type for Alfred.
+     *
      * @link https://www.alfredapp.com/help/workflows/inputs/script-filter/json/
      *
-     * @param string|array|\Alfred\Workflows\ItemParam\Action $action
+     * @param string|array|\Alfred\Workflows\ItemParam\Action|callable $action
      */
     public function action($action): Item
     {
@@ -239,6 +302,16 @@ class Item
 
         if (is_string($action) || is_numeric($action) || is_array($action)) {
             $this->params['action'] = $action;
+
+            return $this;
+        }
+
+        if (is_callable($action)) {
+            $obj = new Action();
+
+            $action($obj);
+
+            $this->params['action'] = $obj->toArray();
 
             return $this;
         }
