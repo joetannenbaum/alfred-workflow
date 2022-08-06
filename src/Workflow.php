@@ -98,6 +98,37 @@ class Workflow
     }
 
     /**
+     * Get the first argument passed in from $argv,
+     * excluding the called script.
+     *
+     * Returns null when there is no argument passed.
+     */
+    public function argument(): string|null
+    {
+        $args = $this->arguments();
+
+        if (count($args) === 0) {
+            return null;
+        }
+
+        return $args[0];
+    }
+
+    /**
+     * Get all of the arguments passed in from $argv,
+     * excluding the called script.
+     */
+    public function arguments(): array
+    {
+        $args = $this->env('argv') ?: [];
+
+        // We don't need the input script, probably
+        array_shift($args);
+
+        return $args;
+    }
+
+    /**
      * Variables can be passed out of the script filter within a variables object.
      * This is useful for two things. Firstly, these variables will be passed out of
      * the script filter's outputs when actioning a result. Secondly, any variables
