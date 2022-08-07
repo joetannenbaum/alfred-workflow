@@ -2,6 +2,8 @@
 
 namespace Alfred\Workflows\ItemParam;
 
+use Exception;
+
 class Mod
 {
     use HasAnIcon, HasParams;
@@ -17,18 +19,18 @@ class Mod
     const KEY_CMD = 'cmd';
 
     /**
-     * @var \Alfred\Workflows\ItemParam\Mod::KEY_*
+     * @var string see Mod::KEY_*
      */
-    protected $key;
+    protected string $key;
 
     /**
-     * @param \Alfred\Workflows\ItemParam\Mod::KEY_* $key
-     * @throws \Exception when $type is invalid
+     * @param string $key see Mod::KEY_*
+     * @throws Exception when $type is invalid
      */
-    public function __construct($key)
+    public function __construct(string $key)
     {
         if (!in_array($key, [self::KEY_SHIFT, self::KEY_FN, self::KEY_CTRL, self::KEY_ALT, self::KEY_CMD])) {
-            throw new \Exception('Invalid mod [' . $key . '], use \Alfred\Workflows\ItemParam\Mod::KEY_*');
+            throw new Exception('Invalid mod [' . $key . '], use \Alfred\Workflows\ItemParam\Mod::KEY_*');
         }
 
         $this->key = $key;
@@ -55,13 +57,6 @@ class Mod
         return $this;
     }
 
-    public function icon(bool $valid): Mod
-    {
-        $this->valid = !!$valid;
-
-        return $this;
-    }
-
     /**
      * Variables can be passed out of the script filter within a variables object.
      * This is useful for two things. Firstly, these variables will be passed out of
@@ -70,9 +65,6 @@ class Mod
      * script is run within the same session. This can be used for very simply
      * managing state between runs as the user types input or when the script is set
      * to re-run after an interval.
-     *
-     * @param string $key
-     * @param mixed $value
      *
      * @link https://www.alfredapp.com/help/workflows/inputs/script-filter/json/#variables
      */
@@ -83,7 +75,7 @@ class Mod
         return $this;
     }
 
-    public function toArray()
+    public function toArray(): array
     {
         ksort($this->params);
 

@@ -2,13 +2,10 @@
 
 namespace Alfred\Workflows;
 
+use Exception;
+
 class Workflow
 {
-    /**
-     * @var Item[]
-     */
-    protected array $items = [];
-
     protected array $variables = [];
 
     /**
@@ -24,26 +21,28 @@ class Workflow
 
     protected Logger $logger;
 
+    protected Items $items;
+
     public function __construct()
     {
         $this->alfred = new Alfred();
         $this->cache = new Cache();
         $this->data = new Data();
         $this->logger = new Logger();
+        $this->items = new Items();
     }
 
     /**
-     * Add a item to the workflow
-     *
-     * @return \Alfred\Workflows\Item
+     * Add an item to the workflow results
      */
     public function item(): Item
     {
-        $item = new Item();
+        return $this->items->add();
+    }
 
-        $this->items[] = $item;
-
-        return $item;
+    public function items(): Items
+    {
+        return $this->items;
     }
 
     /**
@@ -103,7 +102,7 @@ class Workflow
      *
      * Returns null when there is no argument passed.
      */
-    public function argument(): string|null
+    public function argument(): ?string
     {
         $args = $this->arguments();
 
@@ -115,7 +114,7 @@ class Workflow
     }
 
     /**
-     * Get all of the arguments passed in from $argv,
+     * Get all the arguments passed in from $argv,
      * excluding the called script.
      */
     public function arguments(): array
@@ -137,9 +136,6 @@ class Workflow
      * managing state between runs as the user types input or when the script is set
      * to re-run after an interval.
      *
-     * @param string $key
-     * @param mixed $value
-     *
      * @link https://www.alfredapp.com/help/workflows/inputs/script-filter/json/#variables
      */
     public function variable(string $key, $value): Workflow
@@ -155,18 +151,17 @@ class Workflow
      * still active and the user hasn't changed the state of the filter by typing
      * and triggering a re-run.
      *
-     * @param number|float $seconds
-     * @throws \Exception if $seconds is not numeric
-     * @throws \Exception if $second is not within 0.1 and 5.0
+     * @throws Exception if $seconds is not numeric
+     * @throws Exception if $second is not within 0.1 and 5.0
      */
-    public function rerun($seconds): Workflow
+    public function rerun(float $seconds): Workflow
     {
         if (!is_numeric($seconds)) {
-            throw new \Exception('Re-run $seconds must be numeric');
+            throw new Exception('Re-run $seconds must be numeric');
         }
 
         if ($seconds < 0.1 || $seconds > 5) {
-            throw new \Exception('Re-run $seconds must be between 0.1 and 5.0 seconds');
+            throw new Exception('Re-run $seconds must be between 0.1 and 5.0 seconds');
         }
 
         $this->rerun = $seconds;
@@ -175,52 +170,17 @@ class Workflow
     }
 
     /**
-     * Sort the current items
+     * @throws Exception when "title" is missing from item (required property)
      */
-    public function sortItems(string $direction = 'asc', string $property = 'title'): Workflow
-    {
-        usort($this->items, function ($a, $b) use ($direction, $property) {
-            if ($direction === 'asc') {
-                return $a->$property > $b->$property ? 1 : -1;
-            }
-
-            return $a->$property < $b->$property ? 1 : -1;
-        });
-
-        return $this;
-    }
-
-    /**
-     * Filter current items (destructive)
-     */
-    public function filterItems(string $query, string $property = 'title'): Workflow
-    {
-        if ($query === null || trim($query) === '') {
-            return $this;
-        }
-
-        $query = (string) $query;
-
-        $this->items = array_filter($this->items, function ($result) use ($query, $property) {
-            return stristr($result->$property, $query) !== false;
-        });
-
-        return $this;
-    }
-
     public function output(bool $echo = true)
     {
-        /**
-         * Force IDE to understand that this is now an array of arrays
-         * @var array
-         */
         $items = array_map(function ($item) {
             return $item->toArray();
-        }, array_values($this->items));
+        }, array_values($this->items->all()));
 
         foreach ($items as $item) {
             if (!array_key_exists('title', $item)) {
-                throw new \Exception('Title missing from item: ' . json_encode($item));
+                throw new Exception('Title missing from item: ' . json_encode($item));
             }
         }
 

@@ -5,11 +5,11 @@ namespace Alfred\Workflows;
 class Logger
 {
     /**
-     * @var \Alfred\Workflows\Alfred
+     * @var false|resource
      */
     protected $stream;
 
-    protected $prefix = 'alfred';
+    protected string $prefix = 'alfred';
 
     public function __construct()
     {
@@ -25,14 +25,18 @@ class Logger
         $this->prefix = $prefix;
     }
 
+    /**
+     * @param mixed $message
+     * @return false|int
+     */
     public function info($message)
     {
         if (!$this->stream) {
             // We're not in debugging mode, don't do anything
-            return;
+            return false;
         }
 
-        fwrite(
+        return fwrite(
             $this->stream,
             sprintf(
                 '[%s] %s',
@@ -41,6 +45,16 @@ class Logger
             ),
         );
     }
+
+    /**
+     * Alias of `info` method.
+     * @param mixed $message
+     * @return false|int
+     */
+    public function log($message) {
+        return $this->info($message);
+    }
+
 
     protected function messageToString($message)
     {

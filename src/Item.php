@@ -9,6 +9,7 @@ use Alfred\Workflows\ItemParam\Mod;
 use Alfred\Workflows\ItemParam\Text;
 use Alfred\Workflows\ItemParam\Type;
 use Alfred\Workflows\ParamBuilder\Mod as ParamBuilderMod;
+use Exception;
 
 class Item
 {
@@ -41,10 +42,12 @@ class Item
      *
      * @link https://www.alfredapp.com/help/workflows/inputs/script-filter/json/
      *
-     * @param \Alfred\Workflows\Item\Type::TYPE_* $type
+     * @param string $type see \Alfred\Workflows\Item\Type::TYPE_*
      * @param bool $verify_existence When used with $type \Alfred\Workflows\Item::TYPE_FILE
+     *
+     * @throws Exception if $type is invalid
      */
-    public function type($type, bool $verify_existence = true): Item
+    public function type(string $type, bool $verify_existence = true): Item
     {
         $this->params['type'] = Type::handle($type, $verify_existence);
 
@@ -72,10 +75,12 @@ class Item
      *
      * @link https://www.alfredapp.com/help/workflows/inputs/script-filter/json/
      *
-     * @param \Alfred\Workflows\Item\Text::TYPE_* $type
+     * @param string $type see \Alfred\Workflows\Item\Text::TYPE_*
      * @param string $text
+     *
+     * @throws Exception if $type is invalid
      */
-    public function text($type, string $text): Item
+    public function text(string $type, string $text): Item
     {
         $this->mergeParam('text', Text::handle($type, $text));
 
@@ -99,9 +104,9 @@ class Item
      *
      * @link https://www.alfredapp.com/help/workflows/inputs/script-filter/json/
      */
-    public function largetype(string $largetype): Item
+    public function largeType(string $largeType): Item
     {
-        return $this->text(Text::TYPE_LARGETYPE, $largetype);
+        return $this->text(Text::TYPE_LARGE_TYPE, $largeType);
     }
 
     /**
@@ -169,7 +174,7 @@ class Item
         return $this->modViaCallable(Mod::KEY_FN, $fn);
     }
 
-    protected function modViaCallable($key, callable $fn)
+    protected function modViaCallable($key, callable $fn): Item
     {
         $mod = ParamBuilderMod::$key();
 
@@ -237,7 +242,7 @@ class Item
      *
      * @link https://www.alfredapp.com/help/workflows/inputs/script-filter/json/
      */
-    public function quicklookurl(string $url): Item
+    public function quickLookUrl(string $url): Item
     {
         $this->params['quicklookurl'] = $url;
 
@@ -290,7 +295,9 @@ class Item
      *
      * @link https://www.alfredapp.com/help/workflows/inputs/script-filter/json/
      *
-     * @param string|array|\Alfred\Workflows\ItemParam\Action|callable $action
+     * @param string|array|Action|callable $action
+     *
+     * @throws Exception if $action param is of an unknown type
      */
     public function action($action): Item
     {
@@ -316,7 +323,7 @@ class Item
             return $this;
         }
 
-        throw new \Exception('Unknown `action` value, should be a string, array, or instance of \Alfred\Workflows\ItemParam\Action.');
+        throw new Exception('Unknown `action` value, should be a string, array, or instance of \Alfred\Workflows\ItemParam\Action.');
     }
 
     public function __get(string $property)

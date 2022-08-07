@@ -5,9 +5,10 @@ use Alfred\Workflows\ItemParam\Mod as ItemParamMod;
 use Alfred\Workflows\ParamBuilder\Action;
 use Alfred\Workflows\ParamBuilder\Mod;
 use Alfred\Workflows\Workflow;
+use Alfred\Workflows\Items;
 use PHPUnit\Framework\TestCase as FrameworkTestCase;
 
-class TestCase extends FrameworkTestCase
+class WorkflowTest extends FrameworkTestCase
 {
     /** @test */
     public function it_will_error_when_title_is_missing_from_item()
@@ -28,7 +29,7 @@ class TestCase extends FrameworkTestCase
             ->uid('THE ID')
             ->title('Item Title')
             ->subtitle('Item Subtitle')
-            ->quicklookurl('https://www.google.com')
+            ->quickLookUrl('https://www.google.com')
             ->type('file')
             ->arg('ARGUMENT')
             ->valid(false)
@@ -84,7 +85,7 @@ class TestCase extends FrameworkTestCase
             ->uid('THE ID')
             ->title('Item Title')
             ->subtitle('Item Subtitle')
-            ->quicklookurl('https://www.google.com')
+            ->quickLookUrl('https://www.google.com')
             ->type('file')
             ->arg('ARGUMENT')
             ->valid(false)
@@ -99,7 +100,7 @@ class TestCase extends FrameworkTestCase
             ->uid('THE ID 2')
             ->title('Item Title 2')
             ->subtitle('Item Subtitle 2')
-            ->quicklookurl('https://www.google.com/2')
+            ->quickLookUrl('https://www.google.com/2')
             ->type('file')
             ->arg('ARGUMENT 2')
             ->valid(true)
@@ -472,16 +473,6 @@ class TestCase extends FrameworkTestCase
     }
 
     /** @test */
-    public function it_will_error_if_rerun_is_not_numeric()
-    {
-        $this->expectExceptionMessage('Re-run $seconds must be numeric');
-        $workflow = new Workflow();
-        $workflow->item()->title('Re-run please');
-        $workflow->rerun('poodle');
-        $workflow->output(false);
-    }
-
-    /** @test */
     public function it_can_sort_items_by_defaults()
     {
         $workflow = new Workflow();
@@ -511,7 +502,9 @@ class TestCase extends FrameworkTestCase
             ],
         ];
 
-        $this->assertSame(json_encode($expected), $workflow->sortItems()->output(false));
+        $workflow->items()->sort();
+
+        $this->assertSame(json_encode($expected), $workflow->output(false));
     }
 
     /** @test */
@@ -544,7 +537,9 @@ class TestCase extends FrameworkTestCase
             ],
         ];
 
-        $this->assertSame(json_encode($expected), $workflow->sortItems('desc')->output(false));
+        $workflow->items()->sort(Items::SORT_DESC);
+
+        $this->assertSame(json_encode($expected), $workflow->output(false));
     }
 
     /** @test */
@@ -577,7 +572,9 @@ class TestCase extends FrameworkTestCase
             ],
         ];
 
-        $this->assertSame(json_encode($expected), $workflow->sortItems('asc', 'uid')->output(false));
+        $workflow->items()->sort(Items::SORT_ASC, 'uid');
+
+        $this->assertSame(json_encode($expected), $workflow->output(false));
     }
 
     /** @test */
@@ -605,7 +602,9 @@ class TestCase extends FrameworkTestCase
             ],
         ];
 
-        $this->assertSame(json_encode($expected), $workflow->filterItems(2)->output(false));
+        $workflow->items()->filter(2);
+
+        $this->assertSame(json_encode($expected), $workflow->output(false));
     }
 
     /** @test */
@@ -633,7 +632,9 @@ class TestCase extends FrameworkTestCase
             ],
         ];
 
-        $this->assertSame(json_encode($expected), $workflow->filterItems('ID 2', 'uid')->output(false));
+        $workflow->items()->filter('ID 2', 'uid');
+
+        $this->assertSame(json_encode($expected), $workflow->output(false));
     }
 
     /** @test */
@@ -648,7 +649,7 @@ class TestCase extends FrameworkTestCase
             ->uid('THE ID')
             ->title('Item Title')
             ->subtitle('Item Subtitle')
-            ->quicklookurl('https://www.google.com')
+            ->quickLookUrl('https://www.google.com')
             ->type('file')
             ->arg('ARGUMENT')
             ->valid(false)
@@ -656,7 +657,7 @@ class TestCase extends FrameworkTestCase
             ->mod(Mod::cmd()->subtitle('Do Something Different')->arg('something-different'))
             ->mod(Mod::shift()->subtitle('Another Different')->arg('another-different')->valid(false))
             ->copy('Please copy this')
-            ->largetype('This will be huge')
+            ->largeType('This will be huge')
             ->autocomplete('AutoComplete This');
 
         $expected = [

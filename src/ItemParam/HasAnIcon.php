@@ -2,7 +2,7 @@
 
 namespace Alfred\Workflows\ItemParam;
 
-use Alfred\Workflows\ItemParam\Icon;
+use Exception;
 
 trait HasAnIcon
 {
@@ -19,9 +19,10 @@ trait HasAnIcon
      * @link https://www.alfredapp.com/help/workflows/inputs/script-filter/json/
      *
      * @param string $path
-     * @param \Alfred\Workflows\Item\Icon::TYPE_* $type
+     * @param string|null $type see \Alfred\Workflows\Item\Icon::TYPE_
+     * @throws Exception when $type is invalid
      */
-    public function icon(string $path, $type = null)
+    public function icon(string $path, ?string $type = null)
     {
         $this->params['icon'] = Icon::handle($path, $type);
 
@@ -39,7 +40,7 @@ trait HasAnIcon
      */
     public function iconFromFile(string $path)
     {
-        return $this->icon($path, Icon::TYPE_FILEICON);
+        return $this->icon($path, Icon::TYPE_FILE_ICON);
     }
 
     /**
@@ -50,6 +51,6 @@ trait HasAnIcon
      */
     public function iconFromFileType(string $type)
     {
-        return $this->icon($type, Icon::TYPE_FILETYPE);
+        return $this->icon($type, Icon::TYPE_FILE_TYPE);
     }
 }

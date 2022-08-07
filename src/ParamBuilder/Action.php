@@ -3,6 +3,7 @@
 namespace Alfred\Workflows\ParamBuilder;
 
 use Alfred\Workflows\ItemParam\Action as ItemParamAction;
+use Exception;
 
 /**
  * @method static \Alfred\Workflows\ItemParam\Action text(string|array $text)
@@ -13,10 +14,13 @@ use Alfred\Workflows\ItemParam\Action as ItemParamAction;
 
 class Action
 {
+    /**
+     * @throws Exception when method is not supported
+     */
     public static function __callStatic(string $method, array $parameters): ItemParamAction
     {
         if (!in_array($method, ['text', 'url', 'file', 'auto'])) {
-            throw new \Exception('The ' . $method . ' is not supported in the Action object.');
+            throw new Exception('The ' . $method . ' is not supported in the Action object.');
         }
 
         $action = new ItemParamAction();

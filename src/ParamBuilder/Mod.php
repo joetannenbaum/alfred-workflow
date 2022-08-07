@@ -3,28 +3,33 @@
 namespace Alfred\Workflows\ParamBuilder;
 
 use Alfred\Workflows\ItemParam\Mod as ItemParamMod;
+use Exception;
 
 /**
- * @method static \Alfred\Workflows\ItemParam\Mod shift()
- * @method static \Alfred\Workflows\ItemParam\Mod fn()
- * @method static \Alfred\Workflows\ItemParam\Mod ctrl()
- * @method static \Alfred\Workflows\ItemParam\Mod alt()
- * @method static \Alfred\Workflows\ItemParam\Mod cmd()
+ * @method static ItemParamMod shift()
+ * @method static ItemParamMod fn()
+ * @method static ItemParamMod ctrl()
+ * @method static ItemParamMod alt()
+ * @method static ItemParamMod cmd()
  */
 
 class Mod
 {
     /**
-     * Instantiate a new \Alfred\Workflows\IItemParam\Mod
+     * Instantiate a new \Alfred\Workflows\ItemParam\Mod
      * instance using a specified mod key.
      *
-     * @param \Alfred\Workflows\ItemParam\Mod::KEY_* $mod
+     * @param string $key see \Alfred\Workflows\ItemParam\Mod::KEY_*
+     * @throws Exception when $key is invalid
      */
-    public static function key($key): ItemParamMod
+    public static function key(string $key): ItemParamMod
     {
         return new ItemParamMod($key);
     }
 
+    /**
+     * @throws Exception when $key is invalid
+     */
     public static function __callStatic(string $method, array $parameters): ItemParamMod
     {
         return new ItemParamMod($method);

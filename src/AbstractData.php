@@ -2,25 +2,29 @@
 
 namespace Alfred\Workflows;
 
+use Exception;
+
 abstract class AbstractData
 {
-    /**
-     * @var \Alfred\Workflows\Alfred
-     */
-    protected $alfred;
+    protected string $filename;
+
+    protected Alfred $alfred;
 
     public function __construct()
     {
         $this->alfred = new Alfred();
     }
 
-    abstract public function dir();
+    abstract public function dir(): string;
 
     public function setFilename($name)
     {
         $this->filename = $name;
     }
 
+    /**
+     * @throws Exception when filename is missing (when both the argument and the default are empty)
+     */
     protected function getFilename($filename = null)
     {
         $filename = $filename ?: $this->filename;
@@ -29,25 +33,31 @@ abstract class AbstractData
             return $filename;
         }
 
-        throw new \Exception('Missing filename! Either pass as second argument or use `setFilename` method');
+        throw new Exception('Missing filename! Either pass as argument or use `setFilename` method');
     }
 
-    public function path($filename = null)
+    /**
+     * @throws Exception when filename is missing (when both the argument and the default are empty)
+     */
+    public function path(?string $filename = null): string
     {
         return $this->dir() . '/' . $this->getFilename($filename);
     }
 
-    public function write($data, $filename = null)
+    public function write($data, ?string $filename = null)
     {
         return file_put_contents($this->path($filename), $data);
     }
 
-    public function read($filename = null)
+    /**
+     * @throws Exception when filename is missing (when both the argument and the default are empty)
+     */
+    public function read(?string $filename = null)
     {
         $filename = $filename ?: $this->filename;
 
         if (!$filename) {
-            throw new \Exception('Missing filename! Either pass as second argument or use `setFilename` method');
+            throw new Exception('Missing filename! Either pass as second argument or use `setFilename` method');
         }
 
         $path = $this->path($filename);
@@ -56,21 +66,26 @@ abstract class AbstractData
             touch($path);
         }
 
-        $data = file_get_contents($path);
-
-        return $data;
+        return file_get_contents($path);
     }
 
-    public function writeJson($data, $filename = null)
+    public function writeJson($data, ?string $filename = null)
     {
         return $this->write(json_encode($data), $filename);
     }
 
-    public function readJson($filename = null, $assoc = true)
+    /**
+     * @throws Exception when filename is missing (when both the argument and the default are empty)
+     */
+    public function readJson(?string $filename = null, bool $assoc = true)
     {
         return json_decode($this->read($filename), $assoc);
     }
 
+    /**
+     * @throws Exception when the workflow bundle ID is missing
+     * @throws Exception when the directory is not set
+     */
     protected function validateDir($path, $type)
     {
         if ($path) {
@@ -82,9 +97,9 @@ abstract class AbstractData
         }
 
         if (!$this->alfred->workflowBundleid()) {
-            throw new \Exception('The workflow bundle ID must be set for the ' . $type . ' directory to exist.');
+            throw new Exception('The workflow bundle ID must be set for the ' . $type . ' directory to exist.');
         }
 
-        throw new \Exception(ucwords($type) . ' directory not set!');
+        throw new Exception(ucwords($type) . ' directory not set!');
     }
 }

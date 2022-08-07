@@ -2,14 +2,20 @@
 
 namespace Alfred\Workflows;
 
+use Exception;
+
 class Data extends AbstractData
 {
     /**
      * @var string
      */
-    protected $filename = 'data.json';
+    protected string $filename = 'data.json';
 
-    public function dir()
+    /**
+     * @throws Exception when the workflow bundle ID is missing
+     * @throws Exception when the directory is not set
+     */
+    public function dir(): string
     {
         return $this->validateDir($this->alfred->workflowData(), 'data');
     }

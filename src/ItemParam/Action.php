@@ -6,28 +6,48 @@ class Action
 {
     use HasParams;
 
-    public function text(string|array $text): Action
+    /**
+     * Explicitly let Alfred know to interpret argument as text
+     *
+     * @param string|array $text
+     */
+    public function text($text): Action
     {
         $this->params['text'] = $text;
 
         return $this;
     }
 
-    public function url(string $url): Action
+    /**
+     * Explicitly let Alfred know to interpret argument as a URL
+     *
+     * @param string|array $url
+     */
+    public function url($url): Action
     {
         $this->params['url'] = $url;
 
         return $this;
     }
 
-    public function file(string $file): Action
+    /**
+     * Explicitly let Alfred know to interpret argument as a file
+     *
+     * @param string|array $file
+     */
+    public function file($file): Action
     {
         $this->params['file'] = $file;
 
         return $this;
     }
 
-    public function auto(string $auto): Action
+    /**
+     * Let Alfred decide how to handle argument
+     *
+     * @param string|array $auto
+     */
+    public function auto($auto): Action
     {
         $this->params['auto'] = $auto;
 

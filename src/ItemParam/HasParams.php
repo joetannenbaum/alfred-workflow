@@ -4,9 +4,9 @@ namespace Alfred\Workflows\ItemParam;
 
 trait HasParams
 {
-    protected $params = [];
+    protected array $params = [];
 
-    public function toArray()
+    public function toArray(): array
     {
         ksort($this->params);
 

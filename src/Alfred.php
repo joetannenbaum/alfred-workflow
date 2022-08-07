@@ -11,7 +11,7 @@ class Alfred
         return $this->get('preferences');
     }
 
-    public function preferencesLocalhash()
+    public function preferencesLocalHash()
     {
         return $this->get('preferences_localhash');
     }
@@ -46,7 +46,7 @@ class Alfred
         return $this->get('version_build');
     }
 
-    public function workflowBundleid()
+    public function workflowBundleId()
     {
         return $this->get('workflow_bundleid');
     }
@@ -81,19 +81,19 @@ class Alfred
         return $this->get('debug');
     }
 
-    public function debugging()
+    public function debugging(): bool
     {
         return !!$this->debug();
     }
 
-    public function all()
+    public function all(): array
     {
         return array_filter($_SERVER, function ($value, $key) {
             return strpos($key, self::ENV_PREFIX, 0) === 0;
         }, ARRAY_FILTER_USE_BOTH);
     }
 
-    public function get(string $name = null)
+    public function get(?string $name = null)
     {
         if (!$name) {
             return $this->all();

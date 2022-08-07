@@ -2,14 +2,17 @@
 
 namespace Alfred\Workflows;
 
+use Exception;
+
 class Cache extends AbstractData
 {
-    /**
-     * @var string
-     */
-    protected $filename = 'cache.json';
+    protected string $filename = 'cache.json';
 
-    public function dir()
+    /**
+     * @throws Exception when the workflow bundle ID is missing
+     * @throws Exception when the directory is not set
+     */
+    public function dir(): string
     {
         return $this->validateDir($this->alfred->workflowCache(), 'cache');
     }
