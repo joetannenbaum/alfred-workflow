@@ -4,7 +4,7 @@ namespace Alfred\Workflows;
 
 class Alfred
 {
-    protected $envPrefix = 'alfred_';
+    const ENV_PREFIX = 'alfred_';
 
     public function preferences()
     {
@@ -89,7 +89,7 @@ class Alfred
     public function all()
     {
         return array_filter($_SERVER, function ($value, $key) {
-            return strpos($key, $this->envPrefix, 0) === 0;
+            return strpos($key, self::ENV_PREFIX, 0) === 0;
         }, ARRAY_FILTER_USE_BOTH);
     }
 
@@ -100,7 +100,7 @@ class Alfred
         }
 
         // Replace the prefix and add it back on in case they are passing it in
-        $name = $this->envPrefix . str_replace($this->envPrefix, '', $name);
+        $name = self::ENV_PREFIX . str_replace(self::ENV_PREFIX, '', $name);
 
         if (array_key_exists($name, $_SERVER)) {
             return $_SERVER[$name];
