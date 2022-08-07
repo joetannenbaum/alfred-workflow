@@ -8,10 +8,7 @@ class Workflow
 {
     protected array $variables = [];
 
-    /**
-     * @var number|float
-     */
-    protected $rerun = null;
+    protected ?float $rerun = null;
 
     protected Alfred $alfred;
 
