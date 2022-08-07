@@ -14,7 +14,8 @@
         "issues": "https://github.com/joetannenbaum/alfred-workflow/issues"
     },
     "require": {
-        "php": "^7.4.0||^8.0"
+        "php": "^7.4.0||^8.0",
+        "ext-json": "*"
     },
     "autoload": {
         "psr-4": {
