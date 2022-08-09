@@ -13,7 +13,8 @@ use Exception;
 
 class Item
 {
-    use HasAnIcon, HasParams;
+    use HasAnIcon;
+    use HasParams;
 
     /**
      * If this item is valid or not. If an item is valid then Alfred will action this
@@ -43,15 +44,24 @@ class Item
      * @link https://www.alfredapp.com/help/workflows/inputs/script-filter/json/
      *
      * @param string $type see \Alfred\Workflows\Item\Type::TYPE_*
-     * @param bool $verify_existence When used with $type \Alfred\Workflows\Item::TYPE_FILE
      *
      * @throws Exception if $type is invalid
      */
-    public function type(string $type, bool $verify_existence = true): Item
+    public function type(string $type): Item
     {
-        $this->params['type'] = Type::handle($type, $verify_existence);
+        $this->params['type'] = Type::handle($type);
 
         return $this;
+    }
+
+    public function typeFile(): Item
+    {
+        return $this->type(Type::TYPE_FILE);
+    }
+
+    public function typeFileSkipExistenceCheck(): Item
+    {
+        return $this->type(Type::TYPE_FILE_SKIP_CHECK);
     }
 
     /**

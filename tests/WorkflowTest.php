@@ -2,10 +2,11 @@
 
 use Alfred\Workflows\ItemParam\Action as ItemParamAction;
 use Alfred\Workflows\ItemParam\Mod as ItemParamMod;
+use Alfred\Workflows\ItemParam\Type;
+use Alfred\Workflows\Items;
 use Alfred\Workflows\ParamBuilder\Action;
 use Alfred\Workflows\ParamBuilder\Mod;
 use Alfred\Workflows\Workflow;
-use Alfred\Workflows\Items;
 use PHPUnit\Framework\TestCase as FrameworkTestCase;
 
 class WorkflowTest extends FrameworkTestCase
@@ -30,7 +31,7 @@ class WorkflowTest extends FrameworkTestCase
             ->title('Item Title')
             ->subtitle('Item Subtitle')
             ->quickLookUrl('https://www.google.com')
-            ->type('file')
+            ->typeFile()
             ->arg('ARGUMENT')
             ->valid(false)
             ->icon('icon.png')
@@ -86,7 +87,7 @@ class WorkflowTest extends FrameworkTestCase
             ->title('Item Title')
             ->subtitle('Item Subtitle')
             ->quickLookUrl('https://www.google.com')
-            ->type('file')
+            ->typeFile()
             ->arg('ARGUMENT')
             ->valid(false)
             ->icon('icon.png')
@@ -101,7 +102,7 @@ class WorkflowTest extends FrameworkTestCase
             ->title('Item Title 2')
             ->subtitle('Item Subtitle 2')
             ->quickLookUrl('https://www.google.com/2')
-            ->type('file')
+            ->typeFile()
             ->arg('ARGUMENT 2')
             ->valid(true)
             ->icon('icon2.png')
@@ -176,11 +177,49 @@ class WorkflowTest extends FrameworkTestCase
     }
 
     /** @test */
+    public function it_can_handle_a_file_type_via_arguments()
+    {
+        $workflow = new Workflow();
+
+        $workflow->item()->title('Just a File')->type(Type::TYPE_FILE);
+
+        $expected = [
+            'items' => [
+                [
+                    'title' => 'Just a File',
+                    'type'  => 'file',
+                ],
+            ],
+        ];
+
+        $this->assertSame(json_encode($expected), $workflow->output(false));
+    }
+
+    /** @test */
     public function it_can_handle_a_file_skipcheck_via_arguments()
     {
         $workflow = new Workflow();
 
-        $workflow->item()->title('Skipcheck')->type('file', false);
+        $workflow->item()->title('Skipcheck')->type(Type::TYPE_FILE_SKIP_CHECK);
+
+        $expected = [
+            'items' => [
+                [
+                    'title' => 'Skipcheck',
+                    'type'  => 'file:skipcheck',
+                ],
+            ],
+        ];
+
+        $this->assertSame(json_encode($expected), $workflow->output(false));
+    }
+
+    /** @test */
+    public function it_can_handle_a_file_skipcheck_via_shortcut()
+    {
+        $workflow = new Workflow();
+
+        $workflow->item()->title('Skipcheck')->typeFileSkipExistenceCheck();
 
         $expected = [
             'items' => [
@@ -650,7 +689,7 @@ class WorkflowTest extends FrameworkTestCase
             ->title('Item Title')
             ->subtitle('Item Subtitle')
             ->quickLookUrl('https://www.google.com')
-            ->type('file')
+            ->typeFile()
             ->arg('ARGUMENT')
             ->valid(false)
             ->icon('icon.png')
