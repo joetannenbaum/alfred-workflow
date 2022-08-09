@@ -738,4 +738,73 @@ class WorkflowTest extends FrameworkTestCase
 
         $this->assertSame(json_encode($expected), $workflow->output(false));
     }
+
+    /** @test */
+    public function it_can_add_variables_to_an_item()
+    {
+        $workflow = new Workflow();
+
+        $workflow->item()
+            ->title('Item Title')
+            ->variable('something', 'also this');
+
+        $expected = [
+            'items' => [
+                [
+                    'title'        => 'Item Title',
+                    'variables' => [
+                        'something' => 'also this',
+                    ]
+                ],
+            ],
+        ];
+
+        $this->assertSame(json_encode($expected), $workflow->output(false));
+    }
+
+    /** @test */
+    public function it_can_add_an_array_of_variables_to_an_item()
+    {
+        $workflow = new Workflow();
+
+        $workflow->item()
+            ->title('Item Title')
+            ->variable(['something' => 'also this']);
+
+        $expected = [
+            'items' => [
+                [
+                    'title'        => 'Item Title',
+                    'variables' => [
+                        'something' => 'also this',
+                    ]
+                ],
+            ],
+        ];
+
+        $this->assertSame(json_encode($expected), $workflow->output(false));
+    }
+
+    /** @test */
+    public function it_can_add_an_array_of_variables_to_an_item_using_plural_method()
+    {
+        $workflow = new Workflow();
+
+        $workflow->item()
+            ->title('Item Title')
+            ->variables(['something' => 'also this']);
+
+        $expected = [
+            'items' => [
+                [
+                    'title'        => 'Item Title',
+                    'variables' => [
+                        'something' => 'also this',
+                    ]
+                ],
+            ],
+        ];
+
+        $this->assertSame(json_encode($expected), $workflow->output(false));
+    }
 }

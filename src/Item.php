@@ -6,6 +6,7 @@ use Alfred\Workflows\ItemParam\Action;
 use Alfred\Workflows\ItemParam\HasAnIcon;
 use Alfred\Workflows\ItemParam\HasParams;
 use Alfred\Workflows\ItemParam\HasValidity;
+use Alfred\Workflows\ItemParam\HasVariables;
 use Alfred\Workflows\ItemParam\Mod;
 use Alfred\Workflows\ItemParam\Text;
 use Alfred\Workflows\ItemParam\Type;
@@ -17,6 +18,7 @@ class Item
     use HasAnIcon;
     use HasParams;
     use HasValidity;
+    use HasVariables;
 
     /**
      * By specifying "type": "file", this makes Alfred treat your result as a file
