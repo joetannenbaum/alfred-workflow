@@ -4,6 +4,7 @@ namespace Alfred\Workflows;
 
 use Alfred\Workflows\ItemParam\Action;
 use Alfred\Workflows\ItemParam\HasAnIcon;
+use Alfred\Workflows\ItemParam\HasArguments;
 use Alfred\Workflows\ItemParam\HasParams;
 use Alfred\Workflows\ItemParam\HasValidity;
 use Alfred\Workflows\ItemParam\HasVariables;
@@ -19,6 +20,7 @@ class Item
     use HasParams;
     use HasValidity;
     use HasVariables;
+    use HasArguments;
 
     /**
      * By specifying "type": "file", this makes Alfred treat your result as a file
@@ -245,22 +247,6 @@ class Item
     public function quickLookUrl(string $url): Item
     {
         $this->params['quicklookurl'] = $url;
-
-        return $this;
-    }
-
-    /**
-     * The argument which is passed through the workflow
-     * to the connected output action.
-     *
-     * @link https://www.alfredapp.com/help/workflows/inputs/script-filter/json/
-     *
-     * @param string|array $arg
-     */
-    public function arg($arg): Item
-    {
-        // TODO: IS THIS A CLASS? INVESTIGATE
-        $this->params['arg'] = $arg;
 
         return $this;
     }

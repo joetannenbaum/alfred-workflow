@@ -10,6 +10,7 @@ class Mod
     use HasParams;
     use HasValidity;
     use HasVariables;
+    use HasArguments;
 
     public const KEY_SHIFT = 'shift';
 
@@ -42,13 +43,6 @@ class Mod
     public function subtitle(string $subtitle): Mod
     {
         $this->params['subtitle'] = $subtitle;
-
-        return $this;
-    }
-
-    public function arg(string $arg): Mod
-    {
-        $this->params['arg'] = $arg;
 
         return $this;
     }

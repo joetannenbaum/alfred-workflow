@@ -88,7 +88,7 @@ class WorkflowTest extends FrameworkTestCase
             ->subtitle('Item Subtitle')
             ->quickLookUrl('https://www.google.com')
             ->typeFile()
-            ->arg('ARGUMENT')
+            ->argument('ARGUMENT')
             ->valid(false)
             ->icon('icon.png')
             ->mod(Mod::cmd()->subtitle('Do Something Different')->arg('something-different'))
