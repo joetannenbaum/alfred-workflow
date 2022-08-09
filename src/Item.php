@@ -5,6 +5,7 @@ namespace Alfred\Workflows;
 use Alfred\Workflows\ItemParam\Action;
 use Alfred\Workflows\ItemParam\HasAnIcon;
 use Alfred\Workflows\ItemParam\HasParams;
+use Alfred\Workflows\ItemParam\HasValidity;
 use Alfred\Workflows\ItemParam\Mod;
 use Alfred\Workflows\ItemParam\Text;
 use Alfred\Workflows\ItemParam\Type;
@@ -15,20 +16,7 @@ class Item
 {
     use HasAnIcon;
     use HasParams;
-
-    /**
-     * If this item is valid or not. If an item is valid then Alfred will action this
-     * item when the user presses return. If the item is not valid, Alfred will do
-     * nothing.
-     *
-     * @link https://www.alfredapp.com/help/workflows/inputs/script-filter/json/
-     */
-    public function valid(bool $valid = true): Item
-    {
-        $this->params['valid'] = !!$valid;
-
-        return $this;
-    }
+    use HasValidity;
 
     /**
      * By specifying "type": "file", this makes Alfred treat your result as a file

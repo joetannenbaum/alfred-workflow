@@ -6,17 +6,19 @@ use Exception;
 
 class Mod
 {
-    use HasAnIcon, HasParams;
+    use HasAnIcon;
+    use HasParams;
+    use HasValidity;
 
-    const KEY_SHIFT = 'shift';
+    public const KEY_SHIFT = 'shift';
 
-    const KEY_FN = 'fn';
+    public const KEY_FN = 'fn';
 
-    const KEY_CTRL = 'ctrl';
+    public const KEY_CTRL = 'ctrl';
 
-    const KEY_ALT = 'alt';
+    public const KEY_ALT = 'alt';
 
-    const KEY_CMD = 'cmd';
+    public const KEY_CMD = 'cmd';
 
     /**
      * @var string see Mod::KEY_*
@@ -46,13 +48,6 @@ class Mod
     public function arg(string $arg): Mod
     {
         $this->params['arg'] = $arg;
-
-        return $this;
-    }
-
-    public function valid(bool $valid): Mod
-    {
-        $this->params['valid'] = !!$valid;
 
         return $this;
     }

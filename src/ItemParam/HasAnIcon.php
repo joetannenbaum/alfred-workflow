@@ -22,7 +22,7 @@ trait HasAnIcon
      * @param string|null $type see \Alfred\Workflows\Item\Icon::TYPE_
      * @throws Exception when $type is invalid
      */
-    public function icon(string $path, ?string $type = null)
+    public function icon(string $path, ?string $type = null): self
     {
         $this->params['icon'] = Icon::handle($path, $type);
 
@@ -49,7 +49,7 @@ trait HasAnIcon
      *
      * @link https://www.alfredapp.com/help/workflows/inputs/script-filter/json/
      */
-    public function iconFromFileType(string $type)
+    public function iconFromFileType(string $type): self
     {
         return $this->icon($type, Icon::TYPE_FILE_TYPE);
     }

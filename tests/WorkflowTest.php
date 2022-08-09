@@ -33,10 +33,10 @@ class WorkflowTest extends FrameworkTestCase
             ->quickLookUrl('https://www.google.com')
             ->typeFile()
             ->arg('ARGUMENT')
-            ->valid(false)
+            ->invalid()
             ->icon('icon.png')
             ->mod(Mod::cmd()->subtitle('Do Something Different')->arg('something-different'))
-            ->mod(Mod::shift()->subtitle('Another Different')->arg('another-different')->valid(false))
+            ->mod(Mod::shift()->subtitle('Another Different')->arg('another-different')->invalid())
             ->copy('Please copy this')
             ->largetype('This will be huge')
             ->autocomplete('AutoComplete This');
