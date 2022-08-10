@@ -22,10 +22,10 @@ class Workflow
 
     public function __construct()
     {
-        $this->alfred = new Alfred();
-        $this->cache = new Cache();
-        $this->data = new Data();
         $this->logger = new Logger();
+        $this->alfred = new Alfred();
+        $this->cache = new Cache($this->logger);
+        $this->data = new Data($this->logger);
         $this->items = new Items();
     }
 

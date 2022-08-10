@@ -8,11 +8,14 @@ abstract class AbstractData
 {
     protected string $filename;
 
+    protected Logger $logger;
+
     protected Alfred $alfred;
 
-    public function __construct()
+    public function __construct(Logger $logger)
     {
         $this->alfred = new Alfred();
+        $this->logger = $logger;
     }
 
     abstract public function dir(): string;
@@ -46,7 +49,11 @@ abstract class AbstractData
 
     public function write($data, ?string $filename = null)
     {
-        return file_put_contents($this->path($filename), $data);
+        $path = $this->path($filename);
+
+        $this->logger->info('Writing to: ' . $path);
+
+        return file_put_contents($path, $data);
     }
 
     /**
@@ -63,8 +70,11 @@ abstract class AbstractData
         $path = $this->path($filename);
 
         if (!file_exists($path)) {
+            $this->logger->info('File does not exist, creating: ' . $path);
             touch($path);
         }
+
+        $this->logger->info('Reading from: ' . $path);
 
         return file_get_contents($path);
     }
