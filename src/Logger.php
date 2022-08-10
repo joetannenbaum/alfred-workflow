@@ -28,7 +28,7 @@ class Logger
         $this->setTimezone();
 
         $this->setPrefix(
-            $this->alfred->workflowBundleId() ?: $this->alfred->workflowName() ?: $this->prefix
+            $this->alfred->workflowName() ?: $this->alfred->workflowBundleId() ?: $this->prefix
         );
     }
 
