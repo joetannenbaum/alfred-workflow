@@ -16,7 +16,6 @@ trait HasArguments
      */
     public function arg($arg): self
     {
-        // TODO: IS THIS A CLASS? INVESTIGATE
         $this->params['arg'] = $arg;
 
         return $this;
