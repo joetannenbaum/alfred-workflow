@@ -39,8 +39,9 @@ class Logger
         return fwrite(
             $this->stream,
             sprintf(
-                '[%s] %s',
+                '[%s] %s %s' . "\n",
                 $this->prefix,
+                date('Y-m-d H:i:s'),
                 $this->messageToString($message)
             ),
         );
@@ -51,7 +52,8 @@ class Logger
      * @param mixed $message
      * @return false|int
      */
-    public function log($message) {
+    public function log($message)
+    {
         return $this->info($message);
     }
 
