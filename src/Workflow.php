@@ -37,6 +37,9 @@ class Workflow
         return $this->items->add();
     }
 
+    /**
+     * Access the collection of items
+     */
     public function items(): Items
     {
         return $this->items;
