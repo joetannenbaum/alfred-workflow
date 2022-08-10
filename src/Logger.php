@@ -13,10 +13,38 @@ class Logger
 
     public function __construct()
     {
-        $alfred = new Alfred();
-
-        if ($alfred->debugging()) {
+        if ((new Alfred())->debugging()) {
             $this->stream = fopen('php://stderr', 'w');
+            $this->setTimezone();
+        }
+    }
+
+    /**
+     * Set the logging timezone based on the system timezone
+     */
+    protected function setTimezone()
+    {
+        $shortName = exec('date +%Z');
+        $offset = exec('date +%z');
+
+        $leading = substr($offset, 0, 1); // - or +
+        $hours = substr($offset, 1, 2);
+        $minutes = substr($offset, 3, 4);
+
+        $offsetInSeconds = ($hours * 60 * 60) + ($minutes * 60);
+
+        if ($leading === '-') {
+            $offsetInSeconds = -$offsetInSeconds;
+        }
+
+        $longName = timezone_name_from_abbr(
+            $shortName,
+            $offsetInSeconds,
+            substr($shortName, 1, 2) === 'DT'
+        );
+
+        if ($longName) {
+            date_default_timezone_set($longName);
         }
     }
 
@@ -39,7 +67,7 @@ class Logger
         return fwrite(
             $this->stream,
             sprintf(
-                '[%s] %s %s' . "\n",
+                "[%s] %s %s\n",
                 $this->prefix,
                 date('Y-m-d H:i:s'),
                 $this->messageToString($message)
