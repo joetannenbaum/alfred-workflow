@@ -11,12 +11,25 @@ class Logger
 
     protected string $prefix = 'alfred';
 
+    protected Alfred $alfred;
+
     public function __construct()
     {
-        if ((new Alfred())->debugging()) {
-            $this->stream = fopen('php://stderr', 'w');
-            $this->setTimezone();
+        $this->alfred = new Alfred();
+
+        if ($this->alfred->debugging()) {
+            $this->setup();
         }
+    }
+
+    protected function setup()
+    {
+        $this->stream = fopen('php://stderr', 'w');
+        $this->setTimezone();
+
+        $this->setPrefix(
+            $this->alfred->workflowBundleId() ?: $this->alfred->workflowName() ?: $this->prefix
+        );
     }
 
     /**
