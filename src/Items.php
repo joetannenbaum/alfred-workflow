@@ -2,7 +2,8 @@
 
 namespace Alfred\Workflows;
 
-class Items {
+class Items
+{
     const SORT_ASC = 'asc';
     const SORT_DESC = 'desc';
 
@@ -11,7 +12,8 @@ class Items {
     /**
      * Add an item to the workflow items list
      */
-    public function add(): Item {
+    public function add(): Item
+    {
         $item = new Item();
 
         $this->items[] = $item;
@@ -22,10 +24,17 @@ class Items {
     /**
      * Sort the current items
      *
+     * @param string|callable $property
      * @param string $direction see Items::SORT_*
      */
-    public function sort(string $direction = self::SORT_ASC, string $property = 'title'): Items
+    public function sort($property = 'title', string $direction = self::SORT_ASC): Items
     {
+        if (is_callable($property)) {
+            usort($this->items, $property);
+
+            return $this;
+        }
+
         usort($this->items, function ($a, $b) use ($direction, $property) {
             if ($direction === self::SORT_ASC) {
                 return $a->$property > $b->$property ? 1 : -1;

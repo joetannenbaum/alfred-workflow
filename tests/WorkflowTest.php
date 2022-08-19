@@ -576,7 +576,7 @@ class WorkflowTest extends FrameworkTestCase
             ],
         ];
 
-        $workflow->items()->sort(Items::SORT_DESC);
+        $workflow->items()->sort('title', Items::SORT_DESC);
 
         $this->assertSame(json_encode($expected), $workflow->output(false));
     }
@@ -611,7 +611,44 @@ class WorkflowTest extends FrameworkTestCase
             ],
         ];
 
-        $workflow->items()->sort(Items::SORT_ASC, 'uid');
+        $workflow->items()->sort('uid', Items::SORT_ASC);
+
+        $this->assertSame(json_encode($expected), $workflow->output(false));
+    }
+
+    /** @test */
+    public function it_can_sort_items_via_a_custom_function()
+    {
+        $workflow = new Workflow();
+
+        $workflow->item()
+            ->uid('123')
+            ->title('Item Title 2')
+            ->subtitle('Item Subtitle 2');
+
+        $workflow->item()
+            ->uid('456')
+            ->title('Item Title')
+            ->subtitle('Item Subtitle');
+
+        $expected = [
+            'items' => [
+                [
+                    'subtitle'     => 'Item Subtitle',
+                    'title'        => 'Item Title',
+                    'uid'          => '456',
+                ],
+                [
+                    'subtitle'     => 'Item Subtitle 2',
+                    'title'        => 'Item Title 2',
+                    'uid'          => '123',
+                ],
+            ],
+        ];
+
+        $workflow->items()->sort(function ($a, $b) {
+            return $a->subtitle > $b->subtitle ? 1 : -1;
+        });
 
         $this->assertSame(json_encode($expected), $workflow->output(false));
     }
