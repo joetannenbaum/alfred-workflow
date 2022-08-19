@@ -136,14 +136,41 @@ class Workflow
      * managing state between runs as the user types input or when the script is set
      * to re-run after an interval.
      *
+     * @param string|array $key
+     *
      * @link https://www.alfredapp.com/help/workflows/inputs/script-filter/json/#variables
      */
-    public function variable(string $key, $value): Workflow
+    public function variable($key, $value): Workflow
     {
+        if (is_array($key)) {
+            return $this->variables($key);
+        }
+
         $this->variables[$key] = $value;
 
         return $this;
     }
+
+    /**
+     * Variables can be passed out of the script filter within a variables object.
+     * This is useful for two things. Firstly, these variables will be passed out of
+     * the script filter's outputs when actioning a result. Secondly, any variables
+     * passed out of a script will be passed back in as environment variables when the
+     * script is run within the same session. This can be used for very simply
+     * managing state between runs as the user types input or when the script is set
+     * to re-run after an interval.
+     *
+     * @link https://www.alfredapp.com/help/workflows/inputs/script-filter/json/#variables
+     */
+    public function variables(array $arr): Workflow
+    {
+        foreach ($arr as $key =>$value) {
+            $this->variables[$key] = $value;
+        }
+
+        return $this;
+    }
+
 
     /**
      * Scripts can be set to re-run automatically after an interval with a value of
