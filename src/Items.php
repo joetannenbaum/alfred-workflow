@@ -48,9 +48,17 @@ class Items
 
     /**
      * Filter current items (destructive)
+     *
+     * @param string|callable $query
      */
-    public function filter(?string $query, string $property = 'title'): Items
+    public function filter($query, string $property = 'title'): Items
     {
+        if (is_callable($query)) {
+            $this->items = array_filter($this->items, $query);
+
+            return $this;
+        }
+
         if ($query === null || trim($query) === '') {
             return $this;
         }

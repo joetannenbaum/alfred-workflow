@@ -714,6 +714,38 @@ class WorkflowTest extends FrameworkTestCase
     }
 
     /** @test */
+    public function it_can_filter_using_a_custom_function()
+    {
+        $workflow = new Workflow();
+
+        $workflow->item()
+            ->uid('THE ID')
+            ->title('Item Title')
+            ->subtitle('Item Subtitle');
+
+        $workflow->item()
+            ->uid('THE ID 2')
+            ->title('Item Title 2')
+            ->subtitle('Item Subtitle 2');
+
+        $expected = [
+            'items' => [
+                [
+                    'subtitle'     => 'Item Subtitle 2',
+                    'title'        => 'Item Title 2',
+                    'uid'          => 'THE ID 2',
+                ],
+            ],
+        ];
+
+        $workflow->items()->filter(function ($item) {
+            return strstr($item->subtitle, '2');
+        });
+
+        $this->assertSame(json_encode($expected), $workflow->output(false));
+    }
+
+    /** @test */
     public function it_can_add_variables()
     {
         $workflow = new Workflow();
