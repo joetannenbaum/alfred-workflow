@@ -876,4 +876,25 @@ class WorkflowTest extends FrameworkTestCase
 
         $this->assertSame(json_encode($expected), $workflow->output(false));
     }
+
+    /** @test */
+    public function it_can_skip_knowledge()
+    {
+        $workflow = new Workflow();
+
+        $workflow->skipKnowledge();
+
+        $workflow->item()->title('Item Title');
+
+        $expected = [
+            'items' => [
+                [
+                    'title'        => 'Item Title',
+                ],
+            ],
+            'skipknowledge' => true,
+        ];
+
+        $this->assertSame(json_encode($expected), $workflow->output(false));
+    }
 }

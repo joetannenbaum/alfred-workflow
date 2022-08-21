@@ -2,13 +2,14 @@
 
 namespace Alfred\Workflows;
 
+use Alfred\Workflows\ItemParam\HasParams;
+use Alfred\Workflows\ItemParam\HasVariables;
 use Exception;
 
 class Workflow
 {
-    protected array $variables = [];
-
-    protected ?float $rerun = null;
+    use HasParams;
+    use HasVariables;
 
     protected Alfred $alfred;
 
@@ -128,51 +129,6 @@ class Workflow
     }
 
     /**
-     * Variables can be passed out of the script filter within a variables object.
-     * This is useful for two things. Firstly, these variables will be passed out of
-     * the script filter's outputs when actioning a result. Secondly, any variables
-     * passed out of a script will be passed back in as environment variables when the
-     * script is run within the same session. This can be used for very simply
-     * managing state between runs as the user types input or when the script is set
-     * to re-run after an interval.
-     *
-     * @param string|array $key
-     *
-     * @link https://www.alfredapp.com/help/workflows/inputs/script-filter/json/#variables
-     */
-    public function variable($key, $value): Workflow
-    {
-        if (is_array($key)) {
-            return $this->variables($key);
-        }
-
-        $this->variables[$key] = $value;
-
-        return $this;
-    }
-
-    /**
-     * Variables can be passed out of the script filter within a variables object.
-     * This is useful for two things. Firstly, these variables will be passed out of
-     * the script filter's outputs when actioning a result. Secondly, any variables
-     * passed out of a script will be passed back in as environment variables when the
-     * script is run within the same session. This can be used for very simply
-     * managing state between runs as the user types input or when the script is set
-     * to re-run after an interval.
-     *
-     * @link https://www.alfredapp.com/help/workflows/inputs/script-filter/json/#variables
-     */
-    public function variables(array $arr): Workflow
-    {
-        foreach ($arr as $key =>$value) {
-            $this->variables[$key] = $value;
-        }
-
-        return $this;
-    }
-
-
-    /**
      * Scripts can be set to re-run automatically after an interval with a value of
      * 0.1 to 5.0 seconds. The script will only be re-run if the script filter is
      * still active and the user hasn't changed the state of the filter by typing
@@ -181,7 +137,7 @@ class Workflow
      * @throws Exception if $seconds is not numeric
      * @throws Exception if $second is not within 0.1 and 5.0
      */
-    public function rerun(float $seconds): Workflow
+    public function rerun(float $seconds): self
     {
         if (!is_numeric($seconds)) {
             throw new Exception('Re-run $seconds must be numeric');
@@ -191,7 +147,20 @@ class Workflow
             throw new Exception('Re-run $seconds must be between 0.1 and 5.0 seconds');
         }
 
-        $this->rerun = $seconds;
+        $this->params['rerun'] = $seconds;
+
+        return $this;
+    }
+
+    /**
+     * In Alfred 5 and above, this preserves the given item order while allowing Alfred
+     * to retain knowledge of your items, like your current selection during a re-run.
+     *
+     * @link https://www.alfredapp.com/help/workflows/inputs/script-filter/json/#uid
+     */
+    public function skipKnowledge($skip = true): self
+    {
+        $this->params['skipknowledge'] = $skip;
 
         return $this;
     }
@@ -199,7 +168,7 @@ class Workflow
     /**
      * @throws Exception when "title" is missing from item (required property)
      */
-    public function output(bool $echo = true)
+    public function output(bool $echo = true): string
     {
         $items = array_map(function ($item) {
             return $item->toArray();
@@ -213,13 +182,7 @@ class Workflow
 
         $output = compact('items');
 
-        if (!empty($this->variables)) {
-            $output['variables'] = $this->variables;
-        };
-
-        if ($this->rerun !== null) {
-            $output['rerun'] = $this->rerun;
-        }
+        $output = array_merge($output, $this->params);
 
         $json = json_encode($output);
 
