@@ -6,6 +6,7 @@ use Alfred\Workflows\ItemParam\Action;
 use Alfred\Workflows\ItemParam\HasAnIcon;
 use Alfred\Workflows\ItemParam\HasArguments;
 use Alfred\Workflows\ItemParam\HasParams;
+use Alfred\Workflows\ItemParam\HasSubtitle;
 use Alfred\Workflows\ItemParam\HasValidity;
 use Alfred\Workflows\ItemParam\HasVariables;
 use Alfred\Workflows\ItemParam\Mod;
@@ -20,6 +21,7 @@ class Item
     use HasParams;
     use HasValidity;
     use HasVariables;
+    use HasSubtitle;
     use HasArguments;
 
     /**
@@ -54,18 +56,6 @@ class Item
     public function typeFileSkipExistenceCheck(): Item
     {
         return $this->type(Type::TYPE_FILE_SKIP_CHECK);
-    }
-
-    /**
-     * The subtitle displayed in the result row.
-     *
-     * @link https://www.alfredapp.com/help/workflows/inputs/script-filter/json/
-     */
-    public function subtitle(string $subtitle): Item
-    {
-        $this->params['subtitle'] = $subtitle;
-
-        return $this;
     }
 
     /**

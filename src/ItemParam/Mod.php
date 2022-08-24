@@ -11,6 +11,7 @@ class Mod
     use HasValidity;
     use HasVariables;
     use HasArguments;
+    use HasSubtitle;
 
     public const KEY_SHIFT = 'shift';
 
@@ -38,13 +39,6 @@ class Mod
         }
 
         $this->key = $key;
-    }
-
-    public function subtitle(string $subtitle): Mod
-    {
-        $this->params['subtitle'] = $subtitle;
-
-        return $this;
     }
 
     public function toArray(): array
