@@ -11,6 +11,7 @@ class Mod
     use HasValidity;
     use HasVariables {
         variable as baseVariable;
+        variables as baseVariables;
     }
     use HasArguments;
     use HasSubtitle;
@@ -26,21 +27,37 @@ class Mod
     public const KEY_CMD = 'cmd';
 
     /**
-     * @var string see Mod::KEY_*
+     * @var array<string>
      */
-    protected string $key;
+    protected array $keys;
 
     /**
-     * @param string $key see Mod::KEY_*
-     * @throws Exception when $type is invalid
+     * @param array|string $key see Mod::KEY_*
+     * @throws Exception when $key is invalid
      */
-    public function __construct(string $key)
+    public function __construct($key)
+    {
+        if (is_array($key)) {
+            foreach ($key as $k) {
+                $this->validateKey($k);
+            }
+
+            $this->keys = $key;
+        } else {
+            $this->validateKey($key);
+
+            $this->keys = [$key];
+        }
+    }
+
+    /**
+     * @throws Exception when $key is invalid
+     */
+    protected function validateKey(string $key)
     {
         if (!in_array($key, [self::KEY_SHIFT, self::KEY_FN, self::KEY_CTRL, self::KEY_ALT, self::KEY_CMD])) {
             throw new Exception('Invalid mod [' . $key . '], use \Alfred\Workflows\ItemParam\Mod::KEY_*');
         }
-
-        $this->key = $key;
     }
 
     public function variable($key, $value = null): self
@@ -54,10 +71,23 @@ class Mod
         return $this->baseVariable($key, $value);
     }
 
+    public function variables(array $variables): self
+    {
+        if (empty($variables)) {
+            $this->params['variables'] = [];
+
+            return $this;
+        }
+
+        return $this->baseVariables($variables);
+    }
+
     public function toArray(): array
     {
         ksort($this->params);
 
-        return [$this->key => $this->params];
+        $key = implode('+', $this->keys);
+
+        return [$key => $this->params];
     }
 }

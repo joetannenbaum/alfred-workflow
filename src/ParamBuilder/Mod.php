@@ -27,6 +27,11 @@ class Mod
         return new ItemParamMod($key);
     }
 
+    public static function combo(array $keys)
+    {
+        return new ItemParamMod($keys);
+    }
+
     /**
      * @throws Exception when $key is invalid
      */

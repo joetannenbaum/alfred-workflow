@@ -107,10 +107,15 @@ class Item
      * on the modifier selection and set a different arg to be passed out
      * if actioned with the modifier.
      *
+     * @param Mod|array $mod
      * @link https://www.alfredapp.com/help/workflows/inputs/script-filter/json/
      */
-    public function mod(Mod $mod): Item
+    public function mod($mod, ?callable $fn = null): Item
     {
+        if (is_array($mod)) {
+            return $this->modViaCallable($mod, $fn);
+        }
+
         $this->mergeParam('mods', $mod->toArray());
 
         return $this;
@@ -166,9 +171,17 @@ class Item
         return $this->modViaCallable(Mod::KEY_FN, $fn);
     }
 
+    /**
+     * @param array|string $key
+     */
     protected function modViaCallable($key, callable $fn): Item
     {
-        $mod = ParamBuilderMod::$key();
+        if (is_array($key)) {
+            $mod = ParamBuilderMod::combo($key);
+        } else {
+            $mod = ParamBuilderMod::$key();
+        }
+
 
         $fn($mod);
 

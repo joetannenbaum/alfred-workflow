@@ -220,6 +220,48 @@ it('can add mods via builder', function () {
     ];
 });
 
+it('can pass a variable to the mod builder', function () {
+    $this->workflow->item()
+        ->title('Command Shift')
+        ->mod(Mod::shift()->variable('testing', 'it out'));
+
+    $this->expected = [
+        'items' => [
+            [
+                'mods' => [
+                    'shift' => [
+                        'variables' => [
+                            'testing' => 'it out',
+                        ],
+                    ],
+                ],
+                'title' => 'Command Shift',
+            ],
+        ],
+    ];
+});
+
+it('can pass variables via array to the mod builder', function () {
+    $this->workflow->item()
+        ->title('Command Shift')
+        ->mod(Mod::cmd()->variables(['testing' => 'it out']));
+
+    $this->expected = [
+        'items' => [
+            [
+                'mods' => [
+                    'cmd' => [
+                        'variables' => [
+                            'testing' => 'it out',
+                        ],
+                    ],
+                ],
+                'title' => 'Command Shift',
+            ],
+        ],
+    ];
+});
+
 it('can pass empty variables to the mod builder', function () {
     $this->workflow->item()
         ->title('Command Shift')
@@ -240,6 +282,55 @@ it('can pass empty variables to the mod builder', function () {
                     ],
                 ],
                 'title' => 'Command Shift',
+            ],
+        ],
+    ];
+});
+
+it('can pass empty variables via array to the mod builder', function () {
+    $this->workflow->item()
+        ->title('Command Shift')
+        ->mod(Mod::cmd()->variables([]))
+        ->mod(Mod::shift()->variable('testing', 'it out'));
+
+    $this->expected = [
+        'items' => [
+            [
+                'mods' => [
+                    'cmd' => [
+                        'variables' => [],
+                    ],
+                    'shift' => [
+                        'variables' => [
+                            'testing' => 'it out',
+                        ],
+                    ],
+                ],
+                'title' => 'Command Shift',
+            ],
+        ],
+    ];
+});
+
+it('can pass combinations of modifiers to an item', function () {
+    $this->workflow->item()
+                    ->title('Command + Shift')
+                    ->mod(
+                        [ItemParamMod::KEY_SHIFT, ItemParamMod::KEY_CMD],
+                        function (ItemParamMod $mod) {
+                            $mod->subtitle('Combo keys!');
+                        }
+                    );
+
+    $this->expected = [
+        'items' => [
+            [
+                'mods' => [
+                    'shift+cmd' => [
+                        'subtitle' => 'Combo keys!',
+                    ],
+                ],
+                'title' => 'Command + Shift',
             ],
         ],
     ];
