@@ -9,7 +9,9 @@ class Mod
     use HasAnIcon;
     use HasParams;
     use HasValidity;
-    use HasVariables;
+    use HasVariables {
+        variable as baseVariable;
+    }
     use HasArguments;
     use HasSubtitle;
 
@@ -39,6 +41,17 @@ class Mod
         }
 
         $this->key = $key;
+    }
+
+    public function variable($key, $value = null): self
+    {
+        if ($key === null) {
+            $this->params['variables'] = [];
+
+            return $this;
+        }
+
+        return $this->baseVariable($key, $value);
     }
 
     public function toArray(): array

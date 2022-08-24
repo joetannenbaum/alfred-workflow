@@ -220,6 +220,31 @@ it('can add mods via builder', function () {
     ];
 });
 
+it('can pass empty variables to the mod builder', function () {
+    $this->workflow->item()
+        ->title('Command Shift')
+        ->mod(Mod::cmd()->variable(null))
+        ->mod(Mod::shift()->variable('testing', 'it out'));
+
+    $this->expected = [
+        'items' => [
+            [
+                'mods' => [
+                    'cmd' => [
+                        'variables' => [],
+                    ],
+                    'shift' => [
+                        'variables' => [
+                            'testing' => 'it out',
+                        ],
+                    ],
+                ],
+                'title' => 'Command Shift',
+            ],
+        ],
+    ];
+});
+
 it('can add mods via shortcut callable', function () {
     $this->workflow->item()
         ->title('Command Shift')
