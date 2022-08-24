@@ -4,8 +4,8 @@ namespace Alfred\Workflows;
 
 class Items
 {
-    const SORT_ASC = 'asc';
-    const SORT_DESC = 'desc';
+    public const SORT_ASC = 'asc';
+    public const SORT_DESC = 'desc';
 
     protected array $items = [];
 
