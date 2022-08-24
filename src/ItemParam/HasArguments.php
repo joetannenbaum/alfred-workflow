@@ -30,4 +30,14 @@ trait HasArguments
     {
         return $this->arg($arg);
     }
+
+    /**
+     * @param string|array $arg
+     */
+    protected function setArgumentIfEmpty($arg)
+    {
+        if (!$this->hasParam('arg')) {
+            $this->arg($arg);
+        }
+    }
 }

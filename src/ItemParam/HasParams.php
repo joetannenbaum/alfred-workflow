@@ -18,10 +18,15 @@ trait HasParams
      */
     protected function mergeParam(string $key, array $value): void
     {
-        if (array_key_exists($key, $this->params)) {
+        if ($this->hasParam($key)) {
             $this->params[$key] = array_merge($this->params[$key], $value);
         } else {
             $this->params[$key] = $value;
         }
+    }
+
+    protected function hasParam(string $key)
+    {
+        return array_key_exists($key, $this->params);
     }
 }

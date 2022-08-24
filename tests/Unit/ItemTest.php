@@ -403,6 +403,40 @@ it('can handle file type via shortcut', function () {
     ];
 });
 
+it('will not override an existing argument when adding an action', function () {
+    $this->workflow->item()
+        ->title('Universal Action')
+        ->arg('my_arg')
+        ->action('This is the action arg.');
+
+    $this->expected = [
+        'items' => [
+            [
+                'action' => 'This is the action arg.',
+                'arg' => 'my_arg',
+                'title' => 'Universal Action',
+            ],
+        ],
+    ];
+});
+
+it('will allow overriding placeholder action arg', function () {
+    $this->workflow->item()
+        ->title('Universal Action')
+        ->action('This is the action arg.')
+        ->arg('my_arg');
+
+    $this->expected = [
+        'items' => [
+            [
+                'action' => 'This is the action arg.',
+                'arg' => 'my_arg',
+                'title' => 'Universal Action',
+            ],
+        ],
+    ];
+});
+
 it('can add a universal action from a string', function () {
     $this->workflow->item()
         ->title('Universal Action')
@@ -412,6 +446,7 @@ it('can add a universal action from a string', function () {
         'items' => [
             [
                 'action' => 'This is the action arg.',
+                'arg' => 'action_arg',
                 'title' => 'Universal Action',
             ],
         ],
@@ -431,6 +466,7 @@ it('can add a universal action from a callable', function () {
                 'action' => [
                     'text' => 'This is the action arg.',
                 ],
+                'arg' => 'action_arg',
                 'title' => 'Universal Action',
             ],
         ],
@@ -446,6 +482,7 @@ it('can add a universal action from an array', function () {
         'items' => [
             [
                 'action' => ['first', 'second', 'third'],
+                'arg' => 'action_arg',
                 'title' => 'Universal Action',
             ],
         ],
@@ -471,6 +508,7 @@ it('can add a universal action from an action object with string', function () {
                     'text' => 'from an object!',
                     'url' => 'https://joe.codes',
                 ],
+                'arg' => 'action_arg',
                 'title' => 'Universal Action',
             ],
         ],
@@ -496,6 +534,7 @@ it('can add a universal action from an action object with array', function () {
                     'text' => ['first', 'second', 'third'],
                     'url' => 'https://joe.codes',
                 ],
+                'arg' => 'action_arg',
                 'title' => 'Universal Action',
             ],
         ],

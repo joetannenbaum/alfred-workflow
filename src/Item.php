@@ -290,30 +290,17 @@ class Item
      */
     public function action($action): Item
     {
-        if ($action instanceof Action) {
-            $this->params['action'] = $action->toArray();
-
-            return $this;
-        }
-
-        if (is_string($action) || is_numeric($action) || is_array($action)) {
-            $this->params['action'] = $action;
-
-            return $this;
-        }
-
-        if (is_callable($action)) {
-            $obj = new Action();
-
-            $action($obj);
-
-            $this->params['action'] = $obj->toArray();
+        if ($this->resolveAction($action)) {
+            // Universal actions won't work without an argument, just set one if we don't have one already
+            $this->setArgumentIfEmpty('action_arg');
 
             return $this;
         }
 
         throw new Exception('Unknown `action` value, should be a string, array, or instance of \Alfred\Workflows\ItemParam\Action.');
     }
+
+
 
     public function __get(string $property)
     {
@@ -322,5 +309,30 @@ class Item
         }
 
         return null;
+    }
+
+    /**
+     * @param string|array|Action|callable $action
+     */
+    protected function resolveAction($action): bool
+    {
+        if ($action instanceof Action) {
+            $this->params['action'] = $action->toArray();
+            return true;
+        }
+
+        if (is_string($action) || is_numeric($action) || is_array($action)) {
+            $this->params['action'] = $action;
+            return true;
+        }
+
+        if (is_callable($action)) {
+            $obj = new Action();
+            $action($obj);
+            $this->params['action'] = $obj->toArray();
+            return true;
+        }
+
+        return false;
     }
 }
