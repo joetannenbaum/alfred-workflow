@@ -136,6 +136,8 @@ class Workflow
      *
      * @throws Exception if $seconds is not numeric
      * @throws Exception if $second is not within 0.1 and 5.0
+     *
+     * @link https://www.alfredapp.com/help/workflows/inputs/script-filter/json/#rerun
      */
     public function rerun(float $seconds): self
     {
