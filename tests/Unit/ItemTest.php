@@ -7,13 +7,11 @@ use Alfred\Workflows\ParamBuilder\Action;
 use Alfred\Workflows\ParamBuilder\Mod;
 
 it('will error when the title is missing from an item', function () {
-    $this->workflow->item()->iconFromFileType('icon.png');
+    $this->workflow->item()->iconForFileType('icon.png');
     $this->workflow->output(false);
 })->throws('Title missing from item: {"icon":{"path":"icon.png","type":"filetype"}}');
 
 it('can add an item to the workflow', function () {
-    // $workflow = new Workflow();
-
     $this->workflow->item()
         ->uid('THE ID')
         ->title('Item Title')
@@ -256,7 +254,7 @@ it('can add mods via shortcut callable', function () {
 it('can handle file icon via shortcut', function () {
     $this->workflow->item()
         ->title('Icon from File')
-        ->iconFromFile('icon.png');
+        ->iconForFilePath('icon.png');
 
     $this->expected = [
         'items' => [
@@ -274,7 +272,7 @@ it('can handle file icon via shortcut', function () {
 it('can handle file type via shortcut', function () {
     $this->workflow->item()
         ->title('Icon from File Type')
-        ->iconFromFileType('icon.png');
+        ->iconForFileType('icon.png');
 
     $this->expected = [
         'items' => [

@@ -35,10 +35,11 @@ trait HasAnIcon
      * my-image.png -> png icon
      * Alfred.app -> Alfred Icon
      * important-doc.pdf -> pdf icon
+     * ~/Desktop -> desktop icon
      *
      * @link https://www.alfredapp.com/help/workflows/inputs/script-filter/json/
      */
-    public function iconFromFile(string $path)
+    public function iconForFilePath(string $path)
     {
         return $this->icon($path, Icon::TYPE_FILE_ICON);
     }
@@ -49,7 +50,7 @@ trait HasAnIcon
      *
      * @link https://www.alfredapp.com/help/workflows/inputs/script-filter/json/
      */
-    public function iconFromFileType(string $type): self
+    public function iconForFileType(string $type): self
     {
         return $this->icon($type, Icon::TYPE_FILE_TYPE);
     }

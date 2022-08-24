@@ -121,7 +121,6 @@ it('can sort items via a custom function', function () {
 });
 
 it('can filter items', function () {
-
     $this->workflow->item()
         ->uid('THE ID')
         ->title('Item Title')
