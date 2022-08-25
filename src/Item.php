@@ -41,19 +41,19 @@ class Item
      *
      * @throws Exception if $type is invalid
      */
-    public function type(string $type): Item
+    public function type(string $type): self
     {
         $this->params['type'] = Type::handle($type);
 
         return $this;
     }
 
-    public function typeFile(): Item
+    public function typeFile(): self
     {
         return $this->type(Type::TYPE_FILE);
     }
 
-    public function typeFileSkipExistenceCheck(): Item
+    public function typeFileSkipExistenceCheck(): self
     {
         return $this->type(Type::TYPE_FILE_SKIP_CHECK);
     }
@@ -72,7 +72,7 @@ class Item
      *
      * @throws Exception if $type is invalid
      */
-    public function text(string $type, string $text): Item
+    public function text(string $type, string $text): self
     {
         $this->mergeParam('text', Text::handle($type, $text));
 
@@ -85,7 +85,7 @@ class Item
      *
      * @link https://www.alfredapp.com/help/workflows/inputs/script-filter/json/
      */
-    public function copy(string $copy): Item
+    public function copy(string $copy): self
     {
         return $this->text(Text::TYPE_COPY, $copy);
     }
@@ -96,7 +96,7 @@ class Item
      *
      * @link https://www.alfredapp.com/help/workflows/inputs/script-filter/json/
      */
-    public function largeType(string $largeType): Item
+    public function largeType(string $largeType): self
     {
         return $this->text(Text::TYPE_LARGE_TYPE, $largeType);
     }
@@ -110,7 +110,7 @@ class Item
      * @param Mod|array $mod
      * @link https://www.alfredapp.com/help/workflows/inputs/script-filter/json/
      */
-    public function mod($mod, ?callable $fn = null): Item
+    public function mod($mod, ?callable $fn = null): self
     {
         if (is_array($mod)) {
             return $this->modViaCallable($mod, $fn);
@@ -126,7 +126,7 @@ class Item
      *
      * @link https://www.alfredapp.com/help/workflows/inputs/script-filter/json/
      */
-    public function cmd(callable $fn): Item
+    public function cmd(callable $fn): self
     {
         return $this->modViaCallable(Mod::KEY_CMD, $fn);
     }
@@ -136,7 +136,7 @@ class Item
      *
      * @link https://www.alfredapp.com/help/workflows/inputs/script-filter/json/
      */
-    public function shift(callable $fn): Item
+    public function shift(callable $fn): self
     {
         return $this->modViaCallable(Mod::KEY_SHIFT, $fn);
     }
@@ -146,7 +146,7 @@ class Item
      *
      * @link https://www.alfredapp.com/help/workflows/inputs/script-filter/json/
      */
-    public function alt(callable $fn): Item
+    public function alt(callable $fn): self
     {
         return $this->modViaCallable(Mod::KEY_ALT, $fn);
     }
@@ -156,7 +156,7 @@ class Item
      *
      * @link https://www.alfredapp.com/help/workflows/inputs/script-filter/json/
      */
-    public function ctrl(callable $fn): Item
+    public function ctrl(callable $fn): self
     {
         return $this->modViaCallable(Mod::KEY_CTRL, $fn);
     }
@@ -166,7 +166,7 @@ class Item
      *
      * @link https://www.alfredapp.com/help/workflows/inputs/script-filter/json/
      */
-    public function fn(callable $fn): Item
+    public function fn(callable $fn): self
     {
         return $this->modViaCallable(Mod::KEY_FN, $fn);
     }
@@ -174,7 +174,7 @@ class Item
     /**
      * @param array|string $key
      */
-    protected function modViaCallable($key, callable $fn): Item
+    protected function modViaCallable($key, callable $fn): self
     {
         if (is_array($key)) {
             $mod = ParamBuilderMod::combo($key);
@@ -199,7 +199,7 @@ class Item
      *
      * @link https://www.alfredapp.com/help/workflows/inputs/script-filter/json/
      */
-    public function match(string $match): Item
+    public function match(string $match): self
     {
         $this->params['match'] = $match;
 
@@ -218,7 +218,7 @@ class Item
      *
      * @link https://www.alfredapp.com/help/workflows/inputs/script-filter/json/
      */
-    public function uid(string $uid): Item
+    public function uid(string $uid): self
     {
         $this->params['uid'] = $uid;
 
@@ -231,7 +231,7 @@ class Item
      *
      * @link https://www.alfredapp.com/help/workflows/inputs/script-filter/json/
      */
-    public function title(string $title): Item
+    public function title(string $title): self
     {
         $this->params['title'] = $title;
 
@@ -247,7 +247,7 @@ class Item
      *
      * @link https://www.alfredapp.com/help/workflows/inputs/script-filter/json/
      */
-    public function quickLookUrl(string $url): Item
+    public function quickLookUrl(string $url): self
     {
         $this->params['quicklookurl'] = $url;
 
@@ -264,7 +264,7 @@ class Item
      *
      * @link https://www.alfredapp.com/help/workflows/inputs/script-filter/json/
      */
-    public function autocomplete(string $autocomplete): Item
+    public function autocomplete(string $autocomplete): self
     {
         $this->params['autocomplete'] = $autocomplete;
 
@@ -288,7 +288,7 @@ class Item
      *
      * @throws Exception if $action param is of an unknown type
      */
-    public function action($action): Item
+    public function action($action): self
     {
         if ($this->resolveAction($action)) {
             // Universal actions won't work without an argument, just set one if we don't have one already

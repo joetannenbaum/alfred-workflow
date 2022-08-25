@@ -27,7 +27,7 @@ class Items
      * @param string|callable $property
      * @param string $direction see Items::SORT_*
      */
-    public function sort($property = 'title', string $direction = self::SORT_ASC): Items
+    public function sort($property = 'title', string $direction = self::SORT_ASC): self
     {
         if (is_callable($property)) {
             usort($this->items, $property);
@@ -51,7 +51,7 @@ class Items
      *
      * @param string|callable $query
      */
-    public function filter($query, string $property = 'title'): Items
+    public function filter($query, string $property = 'title'): self
     {
         if (is_callable($query)) {
             $this->items = array_filter($this->items, $query);
