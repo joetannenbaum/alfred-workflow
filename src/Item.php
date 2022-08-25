@@ -300,17 +300,6 @@ class Item
         throw new Exception('Unknown `action` value, should be a string, array, or instance of \Alfred\Workflows\ItemParam\Action.');
     }
 
-
-
-    public function __get(string $property)
-    {
-        if (array_key_exists($property, $this->params)) {
-            return $this->params[$property];
-        }
-
-        return null;
-    }
-
     /**
      * @param string|array|Action|callable $action
      */
@@ -334,5 +323,14 @@ class Item
         }
 
         return false;
+    }
+
+    public function __get(string $property)
+    {
+        if (array_key_exists($property, $this->params)) {
+            return $this->params[$property];
+        }
+
+        return null;
     }
 }
