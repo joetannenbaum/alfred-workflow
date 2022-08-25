@@ -5,7 +5,9 @@
 [![Build Status](https://travis-ci.org/joetannenbaum/alfred-workflow.svg?branch=master)](https://travis-ci.org/joetannenbaum/alfred-workflow)
 [![Total Downloads](https://img.shields.io/packagist/dt/joetannenbaum/alfred-workflow.svg?style=flat)](https://packagist.org/packages/joetannenbaum/alfred-workflow)
 
+<p align="center">
 <img src="https://www.alfredphpworkflows.com/images/logo.svg" style="width: 300px; margin: 50px auto; display: block;" />
+</p>
 
 This package simplifies PHP development for [**Alfred**](https://alfredapp.com) workflows.
 
