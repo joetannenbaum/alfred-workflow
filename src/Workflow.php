@@ -39,6 +39,17 @@ class Workflow
     }
 
     /**
+     * Set variables, arguments, and config from a Script Action
+     *
+     * @link https://www.alfredapp.com/help/workflows/utilities/json/
+     * @return RunScript
+     */
+    public function setFromRunScript()
+    {
+        return new RunScript();
+    }
+
+    /**
      * Access the collection of items
      */
     public function items(): Items
